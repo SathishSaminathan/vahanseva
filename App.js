@@ -20,14 +20,16 @@ import Login from './src/screens/auth/Login';
 import {Colors} from './src/constants/ThemeConstants';
 import {HomeTabNavigator} from './src/navigations/TabNavigators';
 import {NavigationContainer} from '@react-navigation/native';
+import PermissionPage from './src/screens/PermissionPage';
 
 const App = () => {
   return (
     <>
       <StatusBar barStyle="dark-content" backgroundColor={Colors.white} />
-      <NavigationContainer>
+      {/* <NavigationContainer>
         <HomeTabNavigator />
-      </NavigationContainer>
+      </NavigationContainer> */}
+      <PermissionPage/>
     </>
   );
 };

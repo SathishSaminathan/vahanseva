@@ -9,7 +9,7 @@ import Ripple from 'react-native-material-ripple';
 
 const BUTTON_HEIGHT = widthPerc(50);
 
-const StartScan = () => {
+const StartScan = (props) => {
   const renderButton = () => {
     return [
       {
@@ -24,6 +24,8 @@ const StartScan = () => {
       // },
     ].map((data, i) => (
       <Ripple
+        onPress={() => props.navigation.push('BarcodePage')}
+        key={i}
         rippleContainerBorderRadius={BUTTON_HEIGHT}
         style={{
           elevation: 10,

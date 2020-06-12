@@ -8,6 +8,7 @@ import History from '../screens/History';
 import {View} from 'react-native';
 import IconComponent from '../components/Shared/IconComponent';
 import {Colors} from '../constants/ThemeConstants';
+import {BarcodeStack} from './StackNavigators';
 
 const Tab = createBottomTabNavigator();
 
@@ -39,7 +40,7 @@ function HomeTabNavigator() {
       />
       <Tab.Screen
         name="Scan"
-        component={StartScan}
+        component={BarcodeStack}
         options={{
           tabBarVisible: false,
           tabBarIcon: ({tintColor, focused}) => (
@@ -53,6 +54,7 @@ function HomeTabNavigator() {
                 backgroundColor: Colors.yellow,
                 justifyContent: 'center',
                 alignItems: 'center',
+                elevation:10
               }}>
               <IconComponent size={20} type={IconType.AntDesign} name="scan1" />
             </View>
