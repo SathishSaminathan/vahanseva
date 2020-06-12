@@ -1,0 +1,6 @@
+export const ADD_USER = "ADD_USER";
+export const REMOVE_USER = "REMOVE_USER";
+export const TOGGLE_LOADING = "TOGGLE_LOADING";
+export const TOGGLE_MODAL = "TOGGLE_MODAL";
+export const ACTIVE_IMAGE = "ACTIVE_IMAGE";
+export const TOGGLE_LOADING_FAB_NAME = "TOGGLE_LOADING_FAB_NAME";
