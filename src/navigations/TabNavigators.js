@@ -70,7 +70,7 @@ function HomeTabNavigator() {
               color={color}
               size={20}
               type={IconType.AntDesign}
-              name="scan1"
+              name="bulb1"
             />
           ),
         }}

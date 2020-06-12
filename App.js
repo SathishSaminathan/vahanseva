@@ -26,10 +26,10 @@ const App = () => {
   return (
     <>
       <StatusBar barStyle="dark-content" backgroundColor={Colors.white} />
-      {/* <NavigationContainer>
+      <NavigationContainer>
         <HomeTabNavigator />
-      </NavigationContainer> */}
-      <PermissionPage/>
+      </NavigationContainer>
+      {/* <PermissionPage/> */}
     </>
   );
 };
