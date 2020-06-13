@@ -15,6 +15,6 @@ const InfoText = ({label, value}) => (
 
 const styles = StyleSheet.create({
   label: {color: Colors.textWhite},
-  value: {fontSize: 17},
+  value: {fontSize: 15},
 });
 export default InfoText;
