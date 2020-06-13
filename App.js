@@ -6,33 +6,70 @@
  * @flow strict-local
  */
 
-import React from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  StatusBar,
-} from 'react-native';
+import React, {Component} from 'react';
+import {StyleSheet, StatusBar} from 'react-native';
+import {check, PERMISSIONS} from 'react-native-permissions';
 
 import Login from './src/screens/auth/Login';
 import {Colors} from './src/constants/ThemeConstants';
 import {HomeTabNavigator} from './src/navigations/TabNavigators';
 import {NavigationContainer} from '@react-navigation/native';
 import PermissionPage from './src/screens/PermissionPage';
+import ChargeFine from './src/screens/ChargeFine';
 
-const App = () => {
-  return (
-    <>
-      <StatusBar barStyle="dark-content" backgroundColor={Colors.white} />
-      <NavigationContainer>
-        <HomeTabNavigator />
-      </NavigationContainer>
-      {/* <PermissionPage/> */}
-    </>
-  );
-};
+class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      CameraPermission: true,
+      LocationPermission: true,
+      User: true,
+    };
+  }
+
+  componentDidMount() {
+    this.checkForPermission(PERMISSIONS.ANDROID.CAMERA, 'CameraPermission');
+    this.checkForPermission(
+      PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
+      'LocationPermission',
+    );
+  }
+
+  grantPermission = () => {
+    this.setState({
+      CameraPermission: true,
+      LocationPermission: true,
+    });
+  };
+
+  checkForPermission = (value, label) => {
+    check(value).then((result) => {
+      this.setState({
+        [label]: result !== 'denied' ? true : false,
+      });
+    });
+  };
+
+  render() {
+    const {CameraPermission, LocationPermission, User} = this.state;
+
+    if (!CameraPermission || !LocationPermission) {
+      return <PermissionPage grantPermission={this.grantPermission} />;
+    }
+
+    if (!User) return <Login />;
+
+    return (
+      <>
+        <StatusBar barStyle="dark-content" backgroundColor={Colors.white} />
+        <NavigationContainer>
+          <HomeTabNavigator />
+          {/* <ChargeFine/> */}
+        </NavigationContainer>
+      </>
+    );
+  }
+}
 
 const styles = StyleSheet.create({
   scrollView: {

@@ -7,6 +7,7 @@ import {
 import BarcodePage from '../screens/BarcodePage';
 import DetailsPage from '../screens/DetailsPage';
 import StartScan from '../screens/StartScan';
+import ChargeFine from '../screens/ChargeFine';
 
 const Stack = createStackNavigator();
 
@@ -41,6 +42,10 @@ function BarcodeStack() {
       <Stack.Screen
         name="BarcodePage"
         component={BarcodePage}
+      />
+      <Stack.Screen
+        name="ChargeFine"
+        component={ChargeFine}
       />
       <Stack.Screen
         name="DetailsPage"

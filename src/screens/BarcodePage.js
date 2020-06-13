@@ -1,13 +1,5 @@
 import React, {Component} from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  Slider,
-  TouchableWithoutFeedback,
-  Dimensions,
-} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import Geolocation from '@react-native-community/geolocation';
 import {RNCamera} from 'react-native-camera';
 import BarcodeMask from 'react-native-barcode-mask';
@@ -37,7 +29,7 @@ export default class BarcodePage extends React.Component {
         const initialPosition = JSON.stringify(position);
         this.setState({initialPosition});
       },
-      (error) => Alert.alert('Error', JSON.stringify(error)),
+      // (error) => Alert.alert('Error', JSON.stringify(error)),
       {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000},
     );
     this.watchID = Geolocation.watchPosition((position) => {

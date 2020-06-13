@@ -17,11 +17,11 @@ const StartScan = (props) => {
         name: 'Scan',
         route: 'scanner',
       },
-      // {
-      //   icon: 'search1',
-      //   name: 'Verify OTP',
-      //   route: 'scanner',
-      // },
+      {
+        icon: 'search1',
+        name: 'Verify OTP',
+        route: 'scanner',
+      },
     ].map((data, i) => (
       <Ripple
         onPress={() => props.navigation.push('BarcodePage')}
@@ -31,14 +31,14 @@ const StartScan = (props) => {
           elevation: 10,
           width: BUTTON_HEIGHT,
           height: BUTTON_HEIGHT,
-          backgroundColor: Colors.yellow,
+          backgroundColor: Colors.primaryThemeColor,
           borderRadius: BUTTON_HEIGHT / 2,
           alignItems: 'center',
           justifyContent: 'center',
         }}>
         <View style={{alignItems: 'center', justifyContent: 'center'}}>
-          <IconComponent type={IconType.AntDesign} name={data.icon} size={50} />
-          <TextComponent style={{fontSize: 25, marginTop: 5}}>
+          <IconComponent color={Colors.white} type={IconType.AntDesign} name={data.icon} size={50} />
+          <TextComponent style={{fontSize: 25, marginTop: 5, color: Colors.white}}>
             {data.name}
           </TextComponent>
         </View>

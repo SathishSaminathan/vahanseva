@@ -12,8 +12,8 @@ export default class PermissionPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      CameraPermission: true,
-      LocationPermission: true,
+      CameraPermission: false,
+      LocationPermission: false,
     };
   }
 
@@ -35,33 +35,17 @@ export default class PermissionPage extends Component {
 
   checkForPermission = (value, label) => {
     check(value).then((result) => {
-      switch (result) {
-        case RESULTS.UNAVAILABLE:
-          console.log(
-            'This feature is not available (on this device / in this context)',
-          );
-          break;
-        case RESULTS.DENIED:
-          console.log(
-            'The permission has not been requested / is denied but requestable',
-          );
-          break;
-        case RESULTS.GRANTED:
-          this.setState(
-            {
-              [label]: true,
-            },
-            () => console.log('The permission is granted'),
-          );
-          break;
-        case RESULTS.BLOCKED:
-          console.log('The permission is denied and not requestable anymore');
-          break;
-      }
+      this.setState(
+        {
+          [label]: RESULTS.GRANTED === result,
+        },
+        () => console.log('The permission is granted'),
+      );
     });
   };
 
   requestPermission = (value, label) => {
+    const {grantPermission} = this.props;
     request(value).then((result) => {
       console.clear();
       console.log('result....', result);
@@ -69,16 +53,24 @@ export default class PermissionPage extends Component {
         {
           [label]: result !== 'denied' ? true : false,
         },
-        () =>
-          this.state.CameraPermission &&
-          this.scroll.scrollTo({x: widthPerc(100)}),
+        () => {
+          if (this.state.CameraPermission) {
+            if (!this.state.LocationPermission) {
+              this.scroll.scrollTo({x: widthPerc(100)});
+            } else {
+              grantPermission();
+            }
+          }
+          if (label === 'LocationPermission' && this.state.LocationPermission)
+            grantPermission();
+        },
       );
     });
   };
 
   render() {
     const {CameraPermission, LocationPermission} = this.state;
-    // console.log('CameraPermission,LocationPermission', this.state);
+    console.log('CameraPermission,LocationPermission', this.state);
     return (
       <View style={{flex: 1}}>
         <ScrollView

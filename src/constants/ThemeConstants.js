@@ -1,8 +1,8 @@
 export const Colors = {
-  primaryThemeColor: '#FF5A60',
+  primaryThemeColor: '#006a4e',
   primaryThemeColor1: '#2d04b8',
   primaryDarkThemeColor: '#ba2100',
-  primaryLightThemeColor: '#71a2ff',
+  primaryLightThemeColor: '#42997a',
   secondaryColor: '#ffe500',
   themeBlack1: '#191919',
   themeBlack: '#000',

@@ -33,7 +33,7 @@ const ButtonComponent = (props) => {
       onPress={onPress}
       style={[
         {
-          backgroundColor: (style && style.backgroundColor) || Colors.yellow,
+          backgroundColor: (style && style.backgroundColor) || Colors.primaryThemeColor,
           alignItems: 'center',
           justifyContent: 'center',
           borderRadius: borderRadius,
@@ -67,7 +67,7 @@ const ButtonComponent = (props) => {
           <TextComponent
             style={{
               fontSize: (style && style.fontSize) || 20,
-              color: (style && style.color) || Colors.themeBlack,
+              color: (style && style.color) || Colors.white,
               fontFamily: style && style.fontFamily,
             }}>
             {children}

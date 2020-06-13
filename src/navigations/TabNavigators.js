@@ -51,12 +51,12 @@ function HomeTabNavigator() {
                 height: 50,
                 width: 50,
                 borderRadius: 58,
-                backgroundColor: Colors.yellow,
+                backgroundColor: Colors.primaryThemeColor,
                 justifyContent: 'center',
                 alignItems: 'center',
                 elevation:10
               }}>
-              <IconComponent size={20} type={IconType.AntDesign} name="scan1" />
+              <IconComponent color={Colors.white} size={20} type={IconType.AntDesign} name="scan1" />
             </View>
           ),
         }}
