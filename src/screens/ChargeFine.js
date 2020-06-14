@@ -6,6 +6,7 @@ import {
   TouchableNativeFeedback,
   FlatList,
   TouchableOpacity,
+  BackHandler,
 } from 'react-native';
 import CheckBox from 'react-native-check-box';
 import {SCLAlert, SCLAlertButton} from 'react-native-scl-alert';
@@ -93,6 +94,25 @@ export default class ChargeFine extends Component {
     };
   }
 
+  componentDidMount() {
+    const backAction = () => {
+      if (this.state.SearchText) {
+        this.setState({
+          SearchText: '',
+          Fines: this.state.arrayholder,
+        });
+        return true;
+      } else {
+        return false;
+      }
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction,
+    );
+  }
+
   handleChange = (fineData, Fines) => {
     const {SelectedFines} = this.state;
     let selectedfines = SelectedFines;
@@ -142,7 +162,7 @@ export default class ChargeFine extends Component {
         }}>
         <View style={{flex: 9}}>
           <TextInput
-            style={{fontFamily: 'ProximaNova-Regular', fontSize:18}}
+            style={{fontFamily: 'ProximaNova-Regular', fontSize: 18}}
             placeholder="Search Violation"
             onChangeText={(SearchText) =>
               this.setState(
