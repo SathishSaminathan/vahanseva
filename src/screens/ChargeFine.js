@@ -4,6 +4,8 @@ import {
   View,
   ScrollView,
   TouchableNativeFeedback,
+  FlatList,
+  TouchableOpacity,
 } from 'react-native';
 import CheckBox from 'react-native-check-box';
 import {SCLAlert, SCLAlertButton} from 'react-native-scl-alert';
@@ -15,76 +17,79 @@ import TextComponent from '../components/Shared/TextComponent';
 import {FontType, IconType} from '../constants/AppConstants';
 import ButtonComponent from '../components/Shared/ButtonComponent';
 import IconComponent from '../components/Shared/IconComponent';
+import {TextInput} from 'react-native-gesture-handler';
 
+let list = [
+  {
+    fineId: 16,
+    fineType: 'General traffic rule violations',
+    fineCost: 500,
+    punishment: 'Bike Ceased',
+  },
+  {
+    fineId: 1,
+    fineType: 'Drunk driving/riding',
+    fineCost: 10000,
+    punishment: '6 months prison or 2 years jail for repetitive violation',
+  },
+  {
+    fineId: 2,
+    fineType: 'General traffic rule violations',
+    fineCost: 500,
+    punishment: null,
+  },
+  {
+    fineId: 3,
+    fineType: 'Violations of road rules and regulations',
+    fineCost: 500,
+    punishment: null,
+  },
+  {
+    fineId: 4,
+    fineType: 'Driving vehicle without valid registration certificate',
+    fineCost: 5000,
+    punishment: null,
+  },
+  {
+    fineId: 5,
+    fineType: 'Driving without licence',
+    fineCost: 5000,
+    punishment: null,
+  },
+  {
+    fineId: 6,
+    fineType: 'Disobeying orders of traffic police',
+    fineCost: 2000,
+    punishment: null,
+  },
+  {
+    fineId: 7,
+    fineType: 'Driving an oversized vehicle',
+    fineCost: 5000,
+    punishment: null,
+  },
+  {
+    fineId: 8,
+    fineType: 'Riding without a helmet',
+    fineCost: 1000,
+    punishment: 'ban of riding licence for 3 months',
+  },
+  {
+    fineId: 9,
+    fineType: 'Rash and negligent driving',
+    fineCost: 5000,
+    punishment: null,
+  },
+];
 export default class ChargeFine extends Component {
   constructor(props) {
     super(props);
     this.state = {
       AlertVisible: false,
       SelectedFines: [],
-      Fines: [
-        {
-          fineId: 16,
-          fineType: 'General traffic rule violations',
-          fineCost: 500,
-          punishment: 'Bike Ceased',
-        },
-        {
-          fineId: 1,
-          fineType: 'Drunk driving/riding',
-          fineCost: 10000,
-          punishment:
-            '6 months prison or 2 years jail for repetitive violation',
-        },
-        {
-          fineId: 2,
-          fineType: 'General traffic rule violations',
-          fineCost: 500,
-          punishment: null,
-        },
-        {
-          fineId: 3,
-          fineType: 'Violations of road rules and regulations',
-          fineCost: 500,
-          punishment: null,
-        },
-        {
-          fineId: 4,
-          fineType: 'Driving vehicle without valid registration certificate',
-          fineCost: 5000,
-          punishment: null,
-        },
-        {
-          fineId: 5,
-          fineType: 'Driving without licence',
-          fineCost: 5000,
-          punishment: null,
-        },
-        {
-          fineId: 6,
-          fineType: 'Disobeying orders of traffic police',
-          fineCost: 2000,
-          punishment: null,
-        },
-        {
-          fineId: 7,
-          fineType: 'Driving an oversized vehicle',
-          fineCost: 5000,
-          punishment: null,
-        },
-        {
-          fineId: 8,
-          fineType: 'Riding without a helmet',
-          fineCost: 1000,
-          punishment: 'ban of riding licence for 3 months',
-        },
-        {
-          fineId: 9,
-          fineType: 'Rash and negligent driving',
-          fineCost: 5000,
-          punishment: null,
-        },
-      ],
+      Fines: list,
+      arrayholder: list,
+      SearchText: '',
     };
   }
 
@@ -125,6 +130,61 @@ export default class ChargeFine extends Component {
       this.state.SelectedFines.find((fine) => fine.fineId === fineId) || false,
     ).length;
 
+  renderHeader = () => {
+    const {SearchText} = this.state;
+    return (
+      <View
+        style={{
+          flexDirection: 'row',
+          borderRadius: 8,
+          borderWidth: 3,
+          margin: 5,
+        }}>
+        <View style={{flex: 9}}>
+          <TextInput
+            style={{fontFamily: 'ProximaNova-Regular', fontSize:18}}
+            placeholder="Search Violation"
+            onChangeText={(SearchText) =>
+              this.setState(
+                {
+                  SearchText,
+                },
+                () => this.searchFilterFunction(SearchText),
+              )
+            }
+            value={SearchText}
+          />
+        </View>
+        <TouchableOpacity
+          onPress={() =>
+            this.setState({
+              SearchText: '',
+              Fines: this.state.arrayholder,
+            })
+          }
+          style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+          <IconComponent
+            type={IconType.AntDesign}
+            name={SearchText ? 'closecircleo' : 'search1'}
+          />
+        </TouchableOpacity>
+      </View>
+    );
+  };
+
+  searchFilterFunction = (text) => {
+    const newData = this.state.arrayholder.filter((item) => {
+      const itemData = `${item.fineType.toUpperCase()}   
+      ${item.fineType.toUpperCase()} ${item.fineType.toUpperCase()}`;
+
+      const textData = text.toUpperCase();
+
+      return itemData.indexOf(textData) > -1;
+    });
+
+    this.setState({Fines: newData});
+  };
+
   render() {
     const {Fines, SelectedFines, AlertVisible} = this.state;
     const TotalAmount = SelectedFines.reduce(
@@ -157,7 +217,8 @@ export default class ChargeFine extends Component {
         <TextComponent type={FontType.BOLD} style={{fontSize: 30, padding: 10}}>
           Select the Violation
         </TextComponent>
-        <ScrollView
+
+        {/* <ScrollView
           contentContainerStyle={{flexGrow: 1, backgroundColor: Colors.white}}>
           {Fines.map((data, i) => (
             <TouchableNativeFeedback
@@ -192,7 +253,45 @@ export default class ChargeFine extends Component {
               </View>
             </TouchableNativeFeedback>
           ))}
-        </ScrollView>
+        </ScrollView> */}
+        <FlatList
+          data={Fines}
+          renderItem={({item}) => (
+            <TouchableNativeFeedback
+              onPress={() => this.handleChange(item, Fines)}>
+              <View
+                style={{
+                  width: widthPerc(100),
+                  paddingVertical: 10,
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  padding: 10,
+                  height: 70,
+                }}>
+                <View style={{flex: 7, paddingRight: 10}}>
+                  <TextComponent style={styles.label}>
+                    {item.fineType}
+                  </TextComponent>
+                </View>
+                <View style={{flex: 2}}>
+                  <TextComponent style={[styles.label]} type={FontType.BOLD}>
+                    {item.fineCost}
+                  </TextComponent>
+                </View>
+                <View style={{flex: 2, alignItems: 'center'}}>
+                  <CheckBox
+                    isChecked={this.checkForSelected(item.fineId)}
+                    onClick={(e) => console.log(e)}
+                    // style={{marginRight: 20, marginLeft: 10}}
+                  />
+                </View>
+              </View>
+            </TouchableNativeFeedback>
+          )}
+          keyExtractor={(item) => item.fineId}
+          // ItemSeparatorComponent={this.renderSeparator}
+          ListHeaderComponent={this.renderHeader}
+        />
         <ButtonComponent
           disabled={TotalAmount === 0}
           onPress={() =>

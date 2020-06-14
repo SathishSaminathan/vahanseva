@@ -81,6 +81,7 @@ const ComplaintInfo = () => {
       }}>
       {List.map((data, i) => (
         <View
+          key={i}
           style={{
             width: widthPerc(97),
             marginVertical: 10,
@@ -110,7 +111,7 @@ const ComplaintInfo = () => {
             value={data.ComplaintDetails}
             isReadMore
           />
-          <ComplaintCardText label="Police Name" value={data.PoliceName} />
+          <ComplaintCardText label="Police Station" value={data.PoliceName} />
           {/* <ReadmoreComponent
             style={{fontSize: 17}}
             lines={1}

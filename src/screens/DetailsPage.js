@@ -105,7 +105,8 @@ const DetailsPage = (props) => {
           />
           <View style={{flexDirection: 'row', width: widthPerc(100)}}>
             <View style={{flex: 1}}>
-              <ButtonComponent>Verify OTP</ButtonComponent>
+              <ButtonComponent
+                onPress={() => props.navigation.navigate('OtpVerification')}>Verify OTP</ButtonComponent>
             </View>
             <View style={{flex: 1}}>
               <ButtonComponent

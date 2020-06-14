@@ -8,6 +8,8 @@ import BarcodePage from '../screens/BarcodePage';
 import DetailsPage from '../screens/DetailsPage';
 import StartScan from '../screens/StartScan';
 import ChargeFine from '../screens/ChargeFine';
+import OtpVerification from '../screens/OTP/components/otp/OtpVerification';
+import VerifyVehicle from '../screens/VerifyVehicle';
 
 const Stack = createStackNavigator();
 
@@ -46,6 +48,22 @@ function BarcodeStack() {
       <Stack.Screen
         name="ChargeFine"
         component={ChargeFine}
+      />
+      <Stack.Screen
+        name="OtpVerification"
+        component={OtpVerification}
+        options={{
+          // title: 'Notifications',
+          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+        }}
+      />
+      <Stack.Screen
+        name="VerifyVehicle"
+        component={VerifyVehicle}
+        options={{
+          // title: 'Notifications',
+          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+        }}
       />
       <Stack.Screen
         name="DetailsPage"

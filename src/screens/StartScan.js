@@ -15,16 +15,16 @@ const StartScan = (props) => {
       {
         icon: 'scan1',
         name: 'Scan',
-        route: 'scanner',
+        route: 'BarcodePage',
       },
       {
         icon: 'search1',
         name: 'Verify OTP',
-        route: 'scanner',
+        route: 'VerifyVehicle',
       },
     ].map((data, i) => (
       <Ripple
-        onPress={() => props.navigation.push('BarcodePage')}
+        onPress={() => props.navigation.push(data.route)}
         key={i}
         rippleContainerBorderRadius={BUTTON_HEIGHT}
         style={{

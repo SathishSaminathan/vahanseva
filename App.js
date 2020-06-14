@@ -16,6 +16,7 @@ import {HomeTabNavigator} from './src/navigations/TabNavigators';
 import {NavigationContainer} from '@react-navigation/native';
 import PermissionPage from './src/screens/PermissionPage';
 import ChargeFine from './src/screens/ChargeFine';
+import VerifyVehicle from './src/screens/VerifyVehicle';
 
 class App extends Component {
   constructor(props) {
@@ -64,7 +65,6 @@ class App extends Component {
         <StatusBar barStyle="dark-content" backgroundColor={Colors.white} />
         <NavigationContainer>
           <HomeTabNavigator />
-          {/* <ChargeFine/> */}
         </NavigationContainer>
       </>
     );
