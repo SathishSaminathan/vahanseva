@@ -4,13 +4,15 @@ import {getData} from '../helpers/utils';
 
 export default class Services {
   async api(type, url, data) {
-    let {accessToken} = await getData(AppVariables.USER);
-    console.log('getData(AppVariables.USER)..', accessToken);
-    let config = {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    };
+    let user = await getData(AppVariables.USER);
+    if (user && user.accessToken) {
+      console.log('getData(AppVariables.USER)..', accessToken);
+      let config = {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      };
+    }
     switch (type) {
       case GET:
         console.log('url...', `${API_IP}${url}`);
