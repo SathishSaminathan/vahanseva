@@ -4,7 +4,7 @@ import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
 
 import Basic from './OwnerInfo/Basic';
 import Attachments from './OwnerInfo/Attachments';
-import { Colors } from '../../constants/ThemeConstants';
+import {Colors} from '../../constants/ThemeConstants';
 import TextComponent from '../../components/Shared/TextComponent';
 
 const initialLayout = {width: Dimensions.get('window').width};

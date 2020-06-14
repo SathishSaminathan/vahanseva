@@ -2,42 +2,84 @@ import React, {Component} from 'react';
 import {StyleSheet, View, ScrollView} from 'react-native';
 import InfoText from '../../../components/Shared/InfoText';
 import {Colors} from '../../../constants/ThemeConstants';
+import {heightPerc} from '../../../helpers/styleHelper';
+import ImageComponent from '../../../components/Shared/ImageComponent';
 
-const Basic = ({params}) => (
+const Basic = ({
+  OwnerInfo: {
+    aadharFileId,
+    aadharNumber,
+    address,
+    dob,
+    email,
+    firstName,
+    gender,
+    lastName,
+    licenseFileId,
+    licenseNumber,
+    ownerId,
+    phCountryCode,
+    phoneNumber,
+    profileImageId,
+  },
+}) => (
   <ScrollView style={{flex: 1, backgroundColor: Colors.white}}>
-    <View style={{flexDirection: 'row', padding: 10}}>
-      <InfoText label="First Name" value="Sathish" />
-      <InfoText label="Last Name" value="Saminathan" />
+    {console.log(
+      aadharFileId,
+      aadharNumber,
+      address,
+      dob,
+      email,
+      firstName,
+      gender,
+      lastName,
+      licenseFileId,
+      licenseNumber,
+      ownerId,
+      phCountryCode,
+      phoneNumber,
+      profileImageId,
+    )}
+    <View style={{padding: 10, flexDirection: 'row'}}>
+      <View style={{flex: 5, justifyContent: 'center'}}>
+        <View
+          style={{
+            height: heightPerc(15),
+            width: heightPerc(15),
+            elevation: 10,
+            backgroundColor: Colors.white,
+          }}>
+          <ImageComponent
+            source={{
+              uri:
+                'https://pickaface.net/gallery/avatar/66961165_171026_2019_co0p.png',
+            }}
+          />
+        </View>
+      </View>
+      <View style={{flex: 5, paddingVertical: 10}}>
+        <InfoText label="First Name" value={firstName} />
+        <InfoText label="Last Name" value={lastName} />
+      </View>
     </View>
     <View style={{flexDirection: 'row', padding: 10}}>
-      <InfoText label="Date of Birth" value="2020-05-21" />
-      <InfoText label="Gender" value="MALE" />
+      <InfoText label="Date of Birth" value={dob} />
+      <InfoText label="Gender" value={gender} />
     </View>
     <View style={{flexDirection: 'row', padding: 10}}>
-      <InfoText label="Phone Number" value="801291249" />
-      <InfoText label="Vehicle Number" value="TN 60 CB 0258" />
+      <InfoText label="Phone Number" value={phoneNumber} />
+      <InfoText label="Email" value={email} />
     </View>
     <View style={{flexDirection: 'row', padding: 10}}>
-      <InfoText label="Insurance Number" value="QQ123456C" />
-      <InfoText label="Registration Date" value="2020-05-21" />
+      <InfoText label="License Number" value={licenseNumber} />
+      <InfoText label="Aadhar Number" value={aadharNumber} />
     </View>
 
     <View style={{flexDirection: 'row', padding: 10}}>
       <InfoText
         label="Address"
-        value="1141, Mettupalayam Road, Saibaba Colony"
+        value={`${address.addressLine},${address.city},${address.state},${address.country},${address.zipCode}.`}
       />
-    </View>
-    <View style={{flexDirection: 'row', padding: 10}}>
-      <InfoText label="City" value="Coimbatore" />
-      <InfoText label="State" value="Tamil Nadu" />
-    </View>
-    <View style={{flexDirection: 'row', padding: 10}}>
-      <InfoText label="Country" value="India" />
-      <InfoText label="Landmark" value="Near police station" />
-    </View>
-    <View style={{flexDirection: 'row', padding: 10}}>
-      <InfoText label="Zip Code" value="641034" />
     </View>
   </ScrollView>
 );

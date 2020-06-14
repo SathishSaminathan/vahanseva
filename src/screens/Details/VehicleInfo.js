@@ -59,6 +59,7 @@ const VehicleInfo = ({
           },
         ].map((data, i) => (
           <View
+            key={i}
             style={{
               // height: 50,
               width: widthPerc(48),
@@ -79,7 +80,7 @@ const VehicleInfo = ({
               <TextComponent style={{fontSize: 10, color: Colors.textWhite}}>
                 {data.name}
               </TextComponent>
-              <TextComponent type={FontType.BOLD} style={{fontSize: 20}}>
+              <TextComponent type={FontType.BOLD} style={{fontSize: 20, paddingTop:8}}>
                 {data.value}
               </TextComponent>
             </View>

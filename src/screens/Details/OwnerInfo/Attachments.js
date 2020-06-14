@@ -61,7 +61,7 @@ const Attachments = ({params}) => {
             minHeight: heightPerc(30),
             alignItems: 'center',
             backgroundColor: Colors.white,
-            marginVertical: 10,
+            marginVertical: 3,
           }}>
           <TouchableOpacity
             activeOpacity={1}

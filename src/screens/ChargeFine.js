@@ -7,6 +7,7 @@ import {
   FlatList,
   TouchableOpacity,
   BackHandler,
+  ActivityIndicator,
 } from 'react-native';
 import CheckBox from 'react-native-check-box';
 import {SCLAlert, SCLAlertButton} from 'react-native-scl-alert';
@@ -92,6 +93,7 @@ export default class ChargeFine extends Component {
       Fines: [],
       arrayholder: list,
       SearchText: '',
+      Loading: true,
     };
     this.Service = new Services();
   }
@@ -102,6 +104,7 @@ export default class ChargeFine extends Component {
         this.setState({
           Fines: res.data.fineResponseDTOs,
           arrayholder: res.data.fineResponseDTOs,
+          Loading: false,
         });
       })
       .catch((err) => {
@@ -202,6 +205,7 @@ export default class ChargeFine extends Component {
           <IconComponent
             type={IconType.AntDesign}
             name={SearchText ? 'closecircleo' : 'search1'}
+            size={20}
           />
         </TouchableOpacity>
       </View>
@@ -222,7 +226,7 @@ export default class ChargeFine extends Component {
   };
 
   render() {
-    const {Fines, SelectedFines, AlertVisible} = this.state;
+    const {Fines, SelectedFines, AlertVisible, Loading} = this.state;
     const TotalAmount = SelectedFines.reduce(
       (sum, {fineCost}) => sum + fineCost,
       0,
@@ -290,44 +294,51 @@ export default class ChargeFine extends Component {
             </TouchableNativeFeedback>
           ))}
         </ScrollView> */}
-        <FlatList
-          data={Fines}
-          renderItem={({item}) => (
-            <TouchableNativeFeedback
-              onPress={() => this.handleChange(item, Fines)}>
-              <View
-                style={{
-                  width: widthPerc(100),
-                  paddingVertical: 10,
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  padding: 10,
-                  height: 70,
-                }}>
-                <View style={{flex: 7, paddingRight: 10}}>
-                  <TextComponent style={styles.label}>
-                    {item.fineType}
-                  </TextComponent>
+        {Loading ? (
+          <View
+            style={{alignItems: 'center', justifyContent: 'center', flex: 1}}>
+            <ActivityIndicator color={Colors.themeBlack} size="large" />
+          </View>
+        ) : (
+          <FlatList
+            data={Fines}
+            renderItem={({item}) => (
+              <TouchableNativeFeedback
+                onPress={() => this.handleChange(item, Fines)}>
+                <View
+                  style={{
+                    width: widthPerc(100),
+                    paddingVertical: 10,
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    padding: 10,
+                    height: 70,
+                  }}>
+                  <View style={{flex: 7, paddingRight: 10}}>
+                    <TextComponent style={styles.label}>
+                      {item.fineType}
+                    </TextComponent>
+                  </View>
+                  <View style={{flex: 2}}>
+                    <TextComponent style={[styles.label]} type={FontType.BOLD}>
+                      {item.fineCost}
+                    </TextComponent>
+                  </View>
+                  <View style={{flex: 2, alignItems: 'center'}}>
+                    <CheckBox
+                      isChecked={this.checkForSelected(item.fineId)}
+                      onClick={(e) => console.log(e)}
+                      // style={{marginRight: 20, marginLeft: 10}}
+                    />
+                  </View>
                 </View>
-                <View style={{flex: 2}}>
-                  <TextComponent style={[styles.label]} type={FontType.BOLD}>
-                    {item.fineCost}
-                  </TextComponent>
-                </View>
-                <View style={{flex: 2, alignItems: 'center'}}>
-                  <CheckBox
-                    isChecked={this.checkForSelected(item.fineId)}
-                    onClick={(e) => console.log(e)}
-                    // style={{marginRight: 20, marginLeft: 10}}
-                  />
-                </View>
-              </View>
-            </TouchableNativeFeedback>
-          )}
-          keyExtractor={(item) => item.fineId}
-          // ItemSeparatorComponent={this.renderSeparator}
-          ListHeaderComponent={this.renderHeader}
-        />
+              </TouchableNativeFeedback>
+            )}
+            keyExtractor={(item) => item.fineId}
+            // ItemSeparatorComponent={this.renderSeparator}
+            ListHeaderComponent={this.renderHeader}
+          />
+        )}
         <ButtonComponent
           disabled={TotalAmount === 0}
           onPress={() =>

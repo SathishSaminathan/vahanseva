@@ -136,6 +136,7 @@ const DetailsPage = (props) => {
               flexDirection: 'row',
               width: widthPerc(100),
               paddingBottom: 5,
+              backgroundColor: Colors.transparent,
             }}>
             <View style={{flex: 1, alignItems: 'center'}}>
               <ButtonComponent

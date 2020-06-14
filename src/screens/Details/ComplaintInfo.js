@@ -5,6 +5,8 @@ import {widthPerc} from '../../helpers/styleHelper';
 import {ReadmoreComponent} from '../../components/Shared/ReadMore';
 import TextComponent from '../../components/Shared/TextComponent';
 import {FontType} from '../../constants/AppConstants';
+import NoData from '../NoData';
+import Ripple from 'react-native-material-ripple';
 
 const ComplaintCardText = ({label, value, isReadMore = false}) => (
   <View style={{flexDirection: 'row', paddingVertical: 5}}>
@@ -28,97 +30,82 @@ const ComplaintCardText = ({label, value, isReadMore = false}) => (
   </View>
 );
 
-const ComplaintInfo = () => {
-  const [List, setList] = useState([
-    {
-      Name: 'Driving without License',
-      Phone: '8012941249',
-      Date: '20-06-2020',
-      ComplaintDetails:
-        'Forgot at home. since I have no time i forgot the license in my home',
-      PoliceName: 'Saravanan',
-      active: true,
-    },
-    {
-      Name: 'Driving without License',
-      Phone: '8012941249',
-      Date: '20-06-2020',
-      ComplaintDetails:
-        'Forgot at home. since I have no time i forgot the license in my home',
-      PoliceName: 'Saravanan',
-    },
-    {
-      Name: 'Driving without License',
-      Phone: '8012941249',
-      Date: '20-06-2020',
-      ComplaintDetails:
-        'Forgot at home. since I have no time i forgot the license in my home',
-      PoliceName: 'Saravanan',
-    },
-    {
-      Name: 'Driving without License',
-      Phone: '8012941249',
-      Date: '20-06-2020',
-      ComplaintDetails:
-        'Forgot at home. since I have no time i forgot the license in my home',
-      PoliceName: 'Saravanan',
-    },
-    {
-      Name: 'Driving without License',
-      Phone: '8012941249',
-      Date: '20-06-2020',
-      ComplaintDetails:
-        'Forgot at home. since I have no time i forgot the license in my home',
-      PoliceName: 'Saravanan',
-    },
-  ]);
+const ComplaintInfo = ({ComplaintInfoD = [], navigation}) => {
+  const [List, setList] = useState(
+    // ComplaintInfoD,
+    [
+      {
+        Name: 'Helmet',
+        Count: 10,
+      },
+      {
+        Name: 'Fast Driving',
+        Count: 3,
+      },
+      {
+        Name: 'Drunk & Drive',
+        Count: 2,
+      },
+      {
+        Name: 'Driving without License',
+        Count: 5,
+      },
+    ],
+  );
   return (
     <ScrollView
       contentContainerStyle={{
         flexGrow: 1,
         backgroundColor: Colors.white,
-        alignItems: 'center',
+        // alignItems: 'center',
+        flexDirection: 'row',
+        flexWrap: 'wrap',
       }}>
-      {List.map((data, i) => (
-        <View
-          key={i}
-          style={{
-            width: widthPerc(97),
-            marginVertical: 10,
-            elevation: 10,
-            backgroundColor: Colors.white,
-            padding: 10,
-            borderRadius: 8,
-            overflow: 'hidden',
-          }}>
-          {data.active && (
-            <View
+      {List.length !== 0 ? (
+        List.map((data, i) => (
+          <View
+            key={i}
+            style={{
+              width: widthPerc(50),
+              // height: 100,
+              // marginVertical: 10,
+              padding: 10,
+              borderRadius: 8,
+              overflow: 'hidden',
+            }}>
+            <Ripple
+              onPress={() => navigation.navigate('ComplaintInfoDetails')}
               style={{
-                height: '200%',
-                width: 5,
-                backgroundColor: Colors.yellow,
-                position: 'absolute',
-                left: 0,
-                top: 0,
-                bottom: 0,
-              }}></View>
-          )}
-          <ComplaintCardText label="Name" value={data.Name} />
-          <ComplaintCardText label="Phine No" value={data.Phone} />
-          <ComplaintCardText label="Date" value={data.Date} />
-          <ComplaintCardText
-            label="Description"
-            value={data.ComplaintDetails}
-            isReadMore
-          />
-          <ComplaintCardText label="Police Station" value={data.PoliceName} />
-          {/* <ReadmoreComponent
+                elevation: 10,
+                backgroundColor: Colors.white,
+                padding: 10,
+                alignItems: 'center',
+                borderRadius: 8,
+              }}>
+              <View style={{height: 40}}>
+                <TextComponent style={{fontSize: 13}}>
+                  {data.Name}
+                </TextComponent>
+              </View>
+              <TextComponent
+                style={{
+                  fontSize: 30,
+                  color: data.Count > 3 ? Colors.red : Colors.green,
+                }}
+                type={FontType.BOLD}>
+                {data.Count}
+              </TextComponent>
+            </Ripple>
+            {/* <ReadmoreComponent
             style={{fontSize: 17}}
             lines={1}
             text={data.ComplaintDetails}
           /> */}
-        </View>
-      ))}
+          </View>
+        ))
+      ) : (
+        <NoData text="No Complaints..." />
+      )}
     </ScrollView>
   );
 };

@@ -51,7 +51,7 @@ export default class VerifyVehicle extends Component {
       <View style={{flex: 1, backgroundColor: Colors.white}}>
         <NavigationHeader
           title={'Verify Vehicle'}
-          leftIconAction={() => alert('hai')}
+          leftIconAction={() => this.props.navigation.goBack()}
           leftIconType={'back'}
           containerStyle={GenericStyles.navigationHeaderBorder}
         />
