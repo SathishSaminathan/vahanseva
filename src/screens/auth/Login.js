@@ -1,45 +1,83 @@
 import React, {Component} from 'react';
-import {Text, View} from 'react-native';
-import {TextField} from 'react-native-material-textfield';
+import {Text, View, TextInput, StatusBar} from 'react-native';
+import {connect} from 'react-redux';
+
 import {Colors} from '../../constants/ThemeConstants';
-import {widthPerc} from '../../helpers/styleHelper';
+import {widthPerc, heightPerc} from '../../helpers/styleHelper';
 import ButtonComponent from '../../components/Shared/ButtonComponent';
 import ImageComponent from '../../components/Shared/ImageComponent';
+import {Images} from '../../assets/images/Images';
+import Services from '../../services';
+import {POST, AppVariables} from '../../constants/AppConstants';
+import {setUser} from '../../store/actions';
+import { storeData } from '../../helpers/utils';
 
-export default class Login extends Component {
+class Login extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      userName: 'police@example.com',
+      password: 'MTIzNDU2',
+    };
+    this.Service = new Services();
+  }
+
+  login = () => {
+    const {toggleLoading, setUser} = this.props;
+    this.Service.api(POST, 'users/authenticate', {
+      ...this.state,
+    })
+      .then((res) => {
+        setUser({accessToken: res.data.accessToken});
+        storeData(AppVariables.USER, {
+          accessToken: res.data.accessToken,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   render() {
+    const {userName, password} = this.state;
     return (
       <View style={{flex: 1, backgroundColor: Colors.white}}>
+        <StatusBar backgroundColor={Colors.white} barStyle="dark-content" />
         <View style={{width: widthPerc(90), alignSelf: 'center'}}>
           <View
             style={{
-              width: 100,
-              height: 100,
+              width: '100%',
+              height: heightPerc(20),
               alignSelf: 'center',
               marginTop: '25%',
               marginBottom: '5%',
             }}>
-            <ImageComponent
-            resizeMode="contain"
-              source={{
-                uri:
-                  'https://www.freepnglogos.com/uploads/cleveland-auto-show-car-logo-png-25.png',
-              }}
-            />
+            <ImageComponent resizeMode="contain" source={Images.vehicle} />
           </View>
-          <TextField
+          <TextInput
             tintColor={Colors.themeBlack}
             label="Email/Mobile"
             style={{fontFamily: 'ProximaNova-Regular'}}
+            value={userName}
           />
-          <TextField
+          <TextInput
             tintColor={Colors.themeBlack}
             label="Password"
             secureTextEntry
+            value={password}
           />
-          <ButtonComponent style={{marginTop: 10}}>Login</ButtonComponent>
+          <ButtonComponent onPress={() => this.login()} style={{marginTop: 10}}>
+            Login
+          </ButtonComponent>
         </View>
       </View>
     );
   }
 }
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setUser: (value) => dispatch(setUser(value)),
+  };
+};
+export default connect(null, mapDispatchToProps)(Login);

@@ -47,7 +47,6 @@ export default class PermissionPage extends Component {
   requestPermission = (value, label) => {
     const {grantPermission} = this.props;
     request(value).then((result) => {
-      console.clear();
       console.log('result....', result);
       this.setState(
         {

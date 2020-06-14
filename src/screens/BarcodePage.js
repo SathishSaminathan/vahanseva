@@ -42,7 +42,7 @@ export default class BarcodePage extends React.Component {
     barcodes.forEach((barcode) => {
       this.props.navigation.push('DetailsPage', {
         barcodeValue: barcode.data,
-        lastPosition: this.state.lastPosition,
+        positions: this.state.lastPosition,
       });
     });
   };
@@ -66,7 +66,7 @@ export default class BarcodePage extends React.Component {
 
   render() {
     const {focusedScreen, lastPosition} = this.state;
-    console.log('focusedScreen..', lastPosition);
+    // console.log('focusedScreen..', lastPosition);
     return (
       <View style={styles.container}>
         {focusedScreen && this.renderCamera()}

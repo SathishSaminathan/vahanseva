@@ -28,3 +28,17 @@ export const IconType = {
   Entypo: Entypo,
   EvilIcons: EvilIcons,
 };
+
+
+export const AppVariables = {
+  USER: 'user',
+  IS_FIRST_TIME_USER: 'IS_FIRST_TIME_USER',
+  NAME: 'NAME',
+  URL_SCHEMA: 'URL_SCHEMA',
+};
+
+export const POST = 'POST';
+export const GET = 'GET';
+
+// export const API_PORT=
+export const API_IP = 'http://122.165.203.72:9095/vin-app-api/api/v1/';

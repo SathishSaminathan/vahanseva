@@ -9,6 +9,7 @@ import {View} from 'react-native';
 import IconComponent from '../components/Shared/IconComponent';
 import {Colors} from '../constants/ThemeConstants';
 import {BarcodeStack} from './StackNavigators';
+import ComingSoon from '../screens/ComingSoon';
 
 const Tab = createBottomTabNavigator();
 
@@ -25,8 +26,8 @@ function HomeTabNavigator() {
         showLabel: false,
       }}>
       <Tab.Screen
-        name="Home"
-        component={Home}
+        name="History"
+        component={History}
         options={{
           tabBarIcon: ({color, focused}) => (
             <IconComponent
@@ -62,8 +63,8 @@ function HomeTabNavigator() {
         }}
       />
       <Tab.Screen
-        name="History"
-        component={History}
+        name="ComingSoon"
+        component={ComingSoon}
         options={{
           tabBarIcon: ({color, focused}) => (
             <IconComponent

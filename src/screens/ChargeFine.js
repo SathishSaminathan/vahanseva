@@ -15,10 +15,11 @@ import {Colors} from '../constants/ThemeConstants';
 import Ripple from 'react-native-material-ripple';
 import {widthPerc} from '../helpers/styleHelper';
 import TextComponent from '../components/Shared/TextComponent';
-import {FontType, IconType} from '../constants/AppConstants';
+import {FontType, IconType, GET} from '../constants/AppConstants';
 import ButtonComponent from '../components/Shared/ButtonComponent';
 import IconComponent from '../components/Shared/IconComponent';
 import {TextInput} from 'react-native-gesture-handler';
+import Services from '../services';
 
 let list = [
   {
@@ -88,13 +89,28 @@ export default class ChargeFine extends Component {
     this.state = {
       AlertVisible: false,
       SelectedFines: [],
-      Fines: list,
+      Fines: [],
       arrayholder: list,
       SearchText: '',
     };
+    this.Service = new Services();
   }
 
+  getFineList = () => {
+    this.Service.api(GET, `fines?dataLength=100`)
+      .then((res) => {
+        this.setState({
+          Fines: res.data.fineResponseDTOs,
+          arrayholder: res.data.fineResponseDTOs,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   componentDidMount() {
+    this.getFineList();
     const backAction = () => {
       if (this.state.SearchText) {
         this.setState({

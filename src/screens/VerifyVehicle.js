@@ -50,7 +50,7 @@ export default class VerifyVehicle extends Component {
     return (
       <View style={{flex: 1, backgroundColor: Colors.white}}>
         <NavigationHeader
-          title={'Go back'}
+          title={'Verify Vehicle'}
           leftIconAction={() => alert('hai')}
           leftIconType={'back'}
           containerStyle={GenericStyles.navigationHeaderBorder}
@@ -59,7 +59,7 @@ export default class VerifyVehicle extends Component {
           <TextComponent
             style={{fontSize: 25, alignSelf: 'center', paddingVertical: 10}}
             type={FontType.BOLD}>
-            Verify Vehicle
+            Enter Vehicle Number
           </TextComponent>
 
           <View

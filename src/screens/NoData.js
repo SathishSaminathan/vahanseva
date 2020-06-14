@@ -11,36 +11,38 @@ import {IconType, FontType} from '../constants/AppConstants';
 
 const BUTTON_HEIGHT = 50;
 
-const NoData = ({navigation}) => (
+const NoData = ({navigation, hasRoute, text = 'Sorry no data found'}) => (
   <View style={{flex: 1, alignItems: 'center'}}>
     <View style={{height: heightPerc(50), width: widthPerc(100)}}>
       <LottieAnimation file={LottieFile.ThiefHiding} />
     </View>
     <TextComponent style={{fontSize: 30}} type={FontType.BOLD}>
-      Sorry no data found
+      {text}
     </TextComponent>
-    <Ripple
-      onPress={() => navigation.navigate('BarcodePage')}
-      rippleContainerBorderRadius={BUTTON_HEIGHT}
-      style={{
-        elevation: 10,
-        width: BUTTON_HEIGHT,
-        height: BUTTON_HEIGHT,
-        backgroundColor: Colors.primaryThemeColor,
-        borderRadius: BUTTON_HEIGHT / 2,
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginTop: 25,
-      }}>
-      <View style={{alignItems: 'center', justifyContent: 'center'}}>
-        <IconComponent
-          color={Colors.white}
-          type={IconType.AntDesign}
-          name={'reload1'}
-          size={30}
-        />
-      </View>
-    </Ripple>
+    {hasRoute && (
+      <Ripple
+        onPress={() => navigation.navigate('BarcodePage')}
+        rippleContainerBorderRadius={BUTTON_HEIGHT}
+        style={{
+          elevation: 10,
+          width: BUTTON_HEIGHT,
+          height: BUTTON_HEIGHT,
+          backgroundColor: Colors.primaryThemeColor,
+          borderRadius: BUTTON_HEIGHT / 2,
+          alignItems: 'center',
+          justifyContent: 'center',
+          marginTop: 25,
+        }}>
+        <View style={{alignItems: 'center', justifyContent: 'center'}}>
+          <IconComponent
+            color={Colors.white}
+            type={IconType.AntDesign}
+            name={'reload1'}
+            size={30}
+          />
+        </View>
+      </Ripple>
+    )}
   </View>
 );
 

@@ -1,13 +1,15 @@
 import React, {Component} from 'react';
 import {Text, View} from 'react-native';
 import {Colors} from '../constants/ThemeConstants';
-import {widthPerc} from '../helpers/styleHelper';
+import {widthPerc, heightPerc} from '../helpers/styleHelper';
 import IconComponent from '../components/Shared/IconComponent';
 import {IconType} from '../constants/AppConstants';
 import TextComponent from '../components/Shared/TextComponent';
 import Ripple from 'react-native-material-ripple';
+import ImageComponent from '../components/Shared/ImageComponent';
+import {Images} from '../assets/images/Images';
 
-const BUTTON_HEIGHT = widthPerc(50);
+const BUTTON_HEIGHT = widthPerc(13);
 
 const StartScan = (props) => {
   const renderButton = () => {
@@ -29,18 +31,38 @@ const StartScan = (props) => {
         rippleContainerBorderRadius={BUTTON_HEIGHT}
         style={{
           elevation: 10,
-          width: BUTTON_HEIGHT,
+          width: widthPerc(50),
           height: BUTTON_HEIGHT,
           backgroundColor: Colors.primaryThemeColor,
           borderRadius: BUTTON_HEIGHT / 2,
           alignItems: 'center',
           justifyContent: 'center',
+          marginVertical: 10,
         }}>
-        <View style={{alignItems: 'center', justifyContent: 'center'}}>
-          <IconComponent color={Colors.white} type={IconType.AntDesign} name={data.icon} size={50} />
-          <TextComponent style={{fontSize: 25, marginTop: 5, color: Colors.white}}>
-            {data.name}
-          </TextComponent>
+        <View
+          style={{
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexDirection: 'row',
+          }}>
+          <View style={{flex: 3, alignItems: 'center'}}>
+            <IconComponent
+              color={Colors.white}
+              type={IconType.AntDesign}
+              name={data.icon}
+              size={18}
+            />
+          </View>
+          <View
+            style={{
+              flex: 7,
+              alignItems: 'flex-start',
+              justifyContent: 'center',
+            }}>
+            <TextComponent style={{fontSize: 16, color: Colors.white,paddingLeft:"12%"}}>
+              {data.name}
+            </TextComponent>
+          </View>
         </View>
       </Ripple>
     ));
@@ -53,7 +75,10 @@ const StartScan = (props) => {
         alignItems: 'center',
         justifyContent: 'space-around',
       }}>
-      {renderButton()}
+      <View style={{height: heightPerc(60), width: '100%'}}>
+        <ImageComponent source={Images.govLogo} resizeMode="contain" />
+      </View>
+      <View style={{flex: 1}}>{renderButton()}</View>
     </View>
   );
 };

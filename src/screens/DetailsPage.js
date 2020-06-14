@@ -12,24 +12,50 @@ import ScannedInfo from './Details/ScannedInfo';
 import LottieAnimation from '../components/Shared/LottieAnimation';
 import {LottieFile} from '../assets/lottie';
 import {heightPerc, widthPerc} from '../helpers/styleHelper';
-import {FontType, IconType} from '../constants/AppConstants';
+import {FontType, IconType, GET} from '../constants/AppConstants';
 import Ripple from 'react-native-material-ripple';
 import IconComponent from '../components/Shared/IconComponent';
 import NoData from './NoData';
 import ButtonComponent from '../components/Shared/ButtonComponent';
+import Services from '../services';
 
 const initialLayout = {width: Dimensions.get('window').width};
 
 const DetailsPage = (props) => {
-  // const {barcodeValue, lastPosition} = props.route.params;
+  let {barcodeValue, positions} = props.route.params;
+  positions = JSON.parse(positions);
+  const {
+    coords: {latitude, longitude},
+  } = positions;
+  console.warn(barcodeValue, positions);
   const [index, setIndex] = React.useState(0);
   const [Loading, setLoading] = useState(true);
-  const [Details, setDetails] = useState(true);
+  const [Details, setDetails] = useState(null);
+  const [VehicleInfoD, setVehicleInfo] = useState(null);
+  const [OwnerInfoD, setOwnerInfo] = useState(null);
+  const [ComplaintInfoD, setComplaintInfo] = useState(null);
+  const Service = new Services();
 
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
     }, 1500);
+    Service.api(
+      GET,
+      `qrcode/scan?latitude=${latitude}&longitude=${longitude}&qrCodeNumber=${encodeURIComponent(
+        barcodeValue,
+      )}`,
+    )
+      .then((res) => {
+        console.log('vehicle/info/complaints...', barcodeValue, res.data);
+        setDetails(res.data);
+        setOwnerInfo(res.data.ownerInfo);
+        setVehicleInfo(res.data.vehicleInfo);
+        setComplaintInfo(res.data.policeComplaints);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
 
   useFocusEffect(
@@ -62,9 +88,11 @@ const DetailsPage = (props) => {
   ]);
 
   const renderScene = SceneMap({
-    VehicleInfo: () => <VehicleInfo {...props} />,
-    OwnerInfo: () => <OwnerInfo {...props} />,
-    ComplaintInfo: () => <ComplaintInfo {...props} />,
+    VehicleInfo: () => <VehicleInfo VehicleInfo={VehicleInfoD} {...props} />,
+    OwnerInfo: () => <OwnerInfo OwnerInfo={OwnerInfoD} {...props} />,
+    ComplaintInfo: () => (
+      <ComplaintInfo ComplaintInfo={ComplaintInfoD} {...props} />
+    ),
   });
 
   const renderLabel = ({route}) => (
@@ -103,22 +131,34 @@ const DetailsPage = (props) => {
             onIndexChange={setIndex}
             initialLayout={initialLayout}
           />
-          <View style={{flexDirection: 'row', width: widthPerc(100)}}>
-            <View style={{flex: 1}}>
+          <View
+            style={{
+              flexDirection: 'row',
+              width: widthPerc(100),
+              paddingBottom: 5,
+            }}>
+            <View style={{flex: 1, alignItems: 'center'}}>
               <ButtonComponent
-                onPress={() => props.navigation.navigate('OtpVerification')}>Verify OTP</ButtonComponent>
+                style={{width: '90%', borderRadius: 8}}
+                onPress={() => props.navigation.navigate('OtpVerification')}>
+                Verify OTP
+              </ButtonComponent>
             </View>
-            <View style={{flex: 1}}>
+            <View style={{flex: 1, alignItems: 'center'}}>
               <ButtonComponent
                 onPress={() => props.navigation.navigate('ChargeFine')}
-                style={{backgroundColor: Colors.red}}>
+                style={{
+                  backgroundColor: Colors.red,
+                  width: '90%',
+                  borderRadius: 8,
+                }}>
                 Charge Fine
               </ButtonComponent>
             </View>
           </View>
         </>
       ) : (
-        <NoData {...props} />
+        <NoData hasRoute {...props} />
       )}
     </View>
   );
