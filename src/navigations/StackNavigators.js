@@ -77,10 +77,10 @@ function BarcodeStack() {
       <Stack.Screen
         name="DetailsPage"
         component={DetailsPage}
-        // options={{
-        //   // title: 'Notifications',
-        //   cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-        // }}
+        options={{
+          // title: 'Notifications',
+          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+        }}
       />
     </Stack.Navigator>
   );

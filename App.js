@@ -21,6 +21,7 @@ import {getData} from './src/helpers/utils';
 import { AppVariables } from './src/constants/AppConstants';
 
 class App extends Component {
+  // CN=Sathish Saminathan, OU=RET, O=RET, L=CBE, ST=Tamilnadu, C=INret123
   constructor(props) {
     super(props);
     this.state = {

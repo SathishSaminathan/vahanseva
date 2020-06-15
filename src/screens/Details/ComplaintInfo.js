@@ -30,7 +30,7 @@ const ComplaintCardText = ({label, value, isReadMore = false}) => (
   </View>
 );
 
-const ComplaintInfo = ({ComplaintInfoD = [], navigation}) => {
+const ComplaintInfo = ({ComplaintInfoD = [], navigation, TrafficFines}) => {
   const [List, setList] = useState(
     // ComplaintInfoD,
     [
@@ -53,60 +53,73 @@ const ComplaintInfo = ({ComplaintInfoD = [], navigation}) => {
     ],
   );
   return (
-    <ScrollView
-      contentContainerStyle={{
-        flexGrow: 1,
-        backgroundColor: Colors.white,
-        // alignItems: 'center',
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-      }}>
-      {List.length !== 0 ? (
-        List.map((data, i) => (
-          <View
-            key={i}
-            style={{
-              width: widthPerc(50),
-              // height: 100,
-              // marginVertical: 10,
-              padding: 10,
-              borderRadius: 8,
-              overflow: 'hidden',
-            }}>
-            <Ripple
-              onPress={() => navigation.navigate('ComplaintInfoDetails')}
+    <View style={{flex: 1, backgroundColor: Colors.white}}>
+      <ScrollView
+        contentContainerStyle={{
+          flexGrow: 1,
+          backgroundColor: Colors.white,
+          // alignItems: 'center',
+          flexDirection: 'row',
+          flexWrap: 'wrap',
+        }}>
+        {TrafficFines.length !== 0 ? (
+          TrafficFines.map((data, i) => (
+            <View
+              key={i}
               style={{
-                elevation: 10,
-                backgroundColor: Colors.white,
+                width: widthPerc(50),
+                // height: 100,
+                // marginVertical: 10,
                 padding: 10,
-                alignItems: 'center',
                 borderRadius: 8,
+                overflow: 'hidden',
               }}>
-              <View style={{height: 40}}>
-                <TextComponent style={{fontSize: 13}}>
-                  {data.Name}
-                </TextComponent>
-              </View>
-              <TextComponent
+              <Ripple
+                onPress={() => navigation.navigate('ComplaintInfoDetails')}
                 style={{
-                  fontSize: 30,
-                  color: data.Count > 3 ? Colors.red : Colors.green,
-                }}
-                type={FontType.BOLD}>
-                {data.Count}
-              </TextComponent>
-            </Ripple>
-            {/* <ReadmoreComponent
-            style={{fontSize: 17}}
-            lines={1}
-            text={data.ComplaintDetails}
-          /> */}
-          </View>
-        ))
-      ) : (
-        <NoData text="No Complaints..." />
-      )}
-    </ScrollView>
+                  elevation: 10,
+                  backgroundColor: Colors.white,
+                  padding: 10,
+                  alignItems: 'flex-start',
+                  borderRadius: 8,
+                }}>
+                <View style={{height: 40}}>
+                  <TextComponent
+                    style={{fontSize: 13, color: Colors.themeBlack}}
+                    type={FontType.BOLD}>
+                    {data.fineType}
+                  </TextComponent>
+                </View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    flex: 1,
+                    width: '100%',
+                    justifyContent: 'center',
+                  }}>
+                  <TextComponent
+                    style={{
+                      fontSize: 30,
+                      color: true ? Colors.red : Colors.green,
+                    }}
+                    type={FontType.BOLD}>
+                    {data.fineCount}
+                  </TextComponent>
+                </View>
+              </Ripple>
+              {/* <ReadmoreComponent
+          style={{fontSize: 17}}
+          lines={1}
+          text={data.ComplaintDetails}
+        /> */}
+            </View>
+          ))
+        ) : (
+          <NoData text="No Complaints..." />
+        )}
+      </ScrollView>
+    </View>
   );
 };
 

@@ -30,6 +30,7 @@ const DetailsPage = (props) => {
   const [ComplaintInfoD, setComplaintInfo] = useState(null);
   const [VehicleId, setVehicleId] = useState(null);
   const [Attachments, setAttachments] = useState([]);
+  const [TrafficFines, setTrafficFines] = useState([]);
   const Service = new Services();
 
   const getDetails = (VehicleNo = null) => {
@@ -53,6 +54,7 @@ const DetailsPage = (props) => {
           setVehicleId(res.data.vehicleInfo.vehicleId);
           setComplaintInfo(res.data.policeComplaints);
           setAttachments(res.data.attachments);
+          setTrafficFines(res.data.trafficFines);
         })
         .catch((err) => {
           console.log(err);
@@ -68,6 +70,7 @@ const DetailsPage = (props) => {
           setVehicleId(res.data.vehicleInfo.vehicleId);
           setComplaintInfo(res.data.policeComplaints);
           setAttachments(res.data.attachments);
+          setTrafficFines(res.data.trafficFines);
         })
         .catch((err) => {
           console.log(err);
@@ -118,7 +121,11 @@ const DetailsPage = (props) => {
       <OwnerInfo Attachments={Attachments} OwnerInfo={OwnerInfoD} {...props} />
     ),
     ComplaintInfo: () => (
-      <ComplaintInfo ComplaintInfo={ComplaintInfoD} {...props} />
+      <ComplaintInfo
+        TrafficFines={TrafficFines}
+        ComplaintInfo={ComplaintInfoD}
+        {...props}
+      />
     ),
   });
 
