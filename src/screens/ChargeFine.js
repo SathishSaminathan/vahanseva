@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import CheckBox from 'react-native-check-box';
 import {SCLAlert, SCLAlertButton} from 'react-native-scl-alert';
+import {CommonActions} from '@react-navigation/native';
 
 import {Colors} from '../constants/ThemeConstants';
 import Ripple from 'react-native-material-ripple';
@@ -251,8 +252,23 @@ export default class ChargeFine extends Component {
               color="white"
             />
           }>
-          <SCLAlertButton theme="success">Pay Now</SCLAlertButton>
-          <SCLAlertButton theme="default">Pay Later</SCLAlertButton>
+          <SCLAlertButton
+            onPress={() => this.props.navigation.navigate('PaymentSuccess')}
+            theme="success">
+            Pay Now
+          </SCLAlertButton>
+          <SCLAlertButton
+            onPress={() =>
+              this.props.navigation.dispatch(
+                CommonActions.reset({
+                  index: 0,
+                  routes: [{name: 'History'}],
+                }),
+              )
+            }
+            theme="default">
+            Pay Later
+          </SCLAlertButton>
         </SCLAlert>
         <TextComponent type={FontType.BOLD} style={{fontSize: 30, padding: 10}}>
           Select the Violation

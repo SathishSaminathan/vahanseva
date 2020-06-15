@@ -11,6 +11,7 @@ import ChargeFine from '../screens/ChargeFine';
 import OtpVerification from '../screens/OTP/components/otp/OtpVerification';
 import VerifyVehicle from '../screens/VerifyVehicle';
 import ComplaintInfoDetails from '../screens/Details/ComplaintInfoDetails';
+import PaymentSuccess from '../screens/PaymentSuccess';
 
 const Stack = createStackNavigator();
 
@@ -81,6 +82,14 @@ function BarcodeStack() {
           // title: 'Notifications',
           cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
         }}
+      />
+      <Stack.Screen
+        name="PaymentSuccess"
+        component={PaymentSuccess}
+        // options={{
+        //   // title: 'Notifications',
+        //   cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+        // }}
       />
     </Stack.Navigator>
   );

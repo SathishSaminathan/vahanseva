@@ -77,7 +77,7 @@ const ComplaintInfo = ({ComplaintInfoD = [], navigation, TrafficFines}) => {
               <Ripple
                 onPress={() => navigation.navigate('ComplaintInfoDetails')}
                 style={{
-                  elevation: 10,
+                  elevation: 5,
                   backgroundColor: Colors.white,
                   padding: 10,
                   alignItems: 'flex-start',

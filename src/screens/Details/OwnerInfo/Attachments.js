@@ -59,20 +59,32 @@ const Attachments = ({Attachments = []}) => {
               backgroundColor: Colors.white,
               borderRadius: 10,
               overflow: 'hidden',
+              borderWidth: 1,
+              borderColor: Colors.primaryThemeColor,
             }}>
             <View
               style={{
                 overflow: 'hidden',
               }}>
-              <TextComponent
-                type={FontType.BOLD}
+              <View
                 style={{
-                  alignSelf: 'center',
-                  fontSize: 18,
-                  paddingVertical: 10,
+                  // flex: 1,
+                  backgroundColor: Colors.primaryThemeColor,
+                  height: heightPerc(5),
+                  alignItems: 'center',
+                  justifyContent: 'center',
                 }}>
-                {data.name}
-              </TextComponent>
+                <TextComponent
+                  type={FontType.BOLD}
+                  style={{
+                    alignSelf: 'center',
+                    fontSize: 18,
+                    paddingVertical: 10,
+                    color: Colors.white,
+                  }}>
+                  {data.name}
+                </TextComponent>
+              </View>
               <View
                 style={{
                   width: widthPerc(95),

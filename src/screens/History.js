@@ -129,7 +129,7 @@ const History = (props) => {
         History
       </TextComponent>
       {List && List.length === 0 ? (
-        <NoData text="No Complaints..." />
+        <NoData text="Loading..." />
       ) : (
         <View style={{flex: 1, backgroundColor: Colors.white}}>
           <View
