@@ -40,4 +40,5 @@ export const POST = 'POST';
 export const GET = 'GET';
 
 // export const API_PORT=
-export const API_IP = 'https://122.165.203.72:5094/vin-app-api/api/v1/';
+// export const API_IP = 'https://122.165.203.72:5094/vin-app-api/api/v1/';
+export const API_IP = 'http://122.165.203.72:9094/vin-app-api/api/v1/';

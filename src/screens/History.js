@@ -10,6 +10,9 @@ import {FontType} from '../constants/AppConstants';
 import Services from '../services';
 import NoData from './NoData';
 import ImageComponent from '../components/Shared/ImageComponent';
+import Fines from './Fines';
+import Scanned from './Scanned';
+import {connect} from 'react-redux';
 
 const ComplaintCardText = ({label, value, isReadMore = false, rs = null}) => (
   <View style={{flexDirection: 'row', paddingVertical: 5}}>
@@ -22,7 +25,11 @@ const ComplaintCardText = ({label, value, isReadMore = false, rs = null}) => (
     <View
       style={{flex: 7, flexDirection: 'row', justifyContent: 'space-between'}}>
       <TextComponent type={FontType.BOLD}>{value}</TextComponent>
-      {rs && <TextComponent type={FontType.BOLD} style={{color: Colors.green}}>{`Rs: ${rs}`}</TextComponent>}
+      {rs && (
+        <TextComponent
+          type={FontType.BOLD}
+          style={{color: Colors.green}}>{`Rs: ${rs}`}</TextComponent>
+      )}
     </View>
   </View>
 );
@@ -30,7 +37,22 @@ const ComplaintCardText = ({label, value, isReadMore = false, rs = null}) => (
 const CheckForStatus = (status) =>
   status === 'PENDING' ? Colors.red : Colors.green;
 
-const History = () => {
+const History = (props) => {
+  const getData = (type) => {
+    setList([]);
+    const {VehicleNo} = props;
+    let url =
+      type === 'Scanned' ? `vehicle/complaints/logs` : `vehicle/complaints`;
+    new Services()
+      .api(GET, url)
+      .then((res) => {
+        setList(type === 'Scanned' ? res.data.logs : res.data.complaints);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   const Service = new Services();
   useEffect(() => {
     Service.api(GET, 'police/complaint')
@@ -44,43 +66,18 @@ const History = () => {
   }, []);
   const [Active, setActive] = useState('Fines');
   const [List, setList] = useState([
-    {
-      VehicleNo: 'TN 39 BT 4863',
-      Name: 'Driving without License',
-      FineAmount: '1000',
-      ScannedAt: '20-06-2020 1.30PM',
-    },
-    {
-      VehicleNo: 'TN 39 BT 4863',
-      Name: 'Driving without License',
-      FineAmount: '1000',
-      ScannedAt: '20-06-2020 1.30PM',
-    },
-    {
-      VehicleNo: 'TN 39 BT 4863',
-      Name: 'Driving without License',
-      FineAmount: '1000',
-      ScannedAt: '20-06-2020 1.30PM',
-    },
-    {
-      VehicleNo: 'TN 39 BT 4863',
-      Name: 'Driving without License',
-      FineAmount: '1000',
-      ScannedAt: '20-06-2020 1.30PM',
-    },
-    {
-      VehicleNo: 'TN 39 BT 4863',
-      Name: 'Driving without License',
-      FineAmount: '1000',
-      ScannedAt: '20-06-2020 1.30PM',
-    },
-    {
-      VehicleNo: 'TN 39 BT 4863',
-      Name: 'Driving without License',
-      FineAmount: '1000',
-      ScannedAt: '20-06-2020 1.30PM',
-    },
+    // {
+    //   VehicleNo: 'TN 39 BT 4863',
+    //   Name: 'Driving without License',
+    //   FineAmount: '1000',
+    //   ScannedAt: '20-06-2020 1.30PM',
+    // },
   ]);
+
+  useEffect(() => {
+    getData(Active);
+  }, []);
+
   return (
     <View style={{flex: 1, backgroundColor: Colors.white}}>
       <View
@@ -131,7 +128,7 @@ const History = () => {
       <TextComponent style={{margin: 10, fontSize: 20}} type={FontType.BOLD}>
         History
       </TextComponent>
-      {List.length === 0 ? (
+      {List && List.length === 0 ? (
         <NoData text="No Complaints..." />
       ) : (
         <View style={{flex: 1, backgroundColor: Colors.white}}>
@@ -140,7 +137,10 @@ const History = () => {
             {['Fines', 'Scanned'].map((data, i) => (
               <TouchableOpacity
                 activeOpacity={0.8}
-                onPress={() => setActive(data)}
+                onPress={() => {
+                  setActive(data);
+                  getData(data);
+                }}
                 key={i}
                 style={{
                   backgroundColor: Active === data ? Colors.red : Colors.white,
@@ -159,7 +159,12 @@ const History = () => {
               </TouchableOpacity>
             ))}
           </View>
-          <ScrollView
+          {Active === 'Fines' ? (
+            <Fines {...props} List={List} />
+          ) : (
+            <Scanned {...props} List={List} />
+          )}
+          {/* <ScrollView
             contentContainerStyle={{
               flexGrow: 1,
               backgroundColor: Colors.white,
@@ -193,28 +198,26 @@ const History = () => {
                   rs={data.FineAmount}
                 />
                 <ComplaintCardText label="Fine Name" value={data.Name} />
-                {/* <ComplaintCardText
-                  label="Fine Amount"
-                  value={data.FineAmount}
-                /> */}
-                {/* <ComplaintCardText label="Pay Type" value={data.PayType} />
-                <ComplaintCardText
-                  label="Fine Status"
-                  value={data.FineStatus}
-                /> */}
+
                 <ComplaintCardText label="Scanned at" value={data.ScannedAt} />
-                {/* <ReadmoreComponent
-          style={{fontSize: 17}}
-          lines={1}
-          text={data.ComplaintDetails}
-        /> */}
               </View>
             ))}
-          </ScrollView>
+          </ScrollView> */}
         </View>
       )}
     </View>
   );
 };
 
-export default History;
+const mapStateToProps = ({
+  user: {
+    current_user: {VehicleNo},
+    isLoading,
+  },
+}) => {
+  return {
+    VehicleNo,
+  };
+};
+
+export default connect(mapStateToProps, null)(History);

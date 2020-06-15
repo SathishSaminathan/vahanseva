@@ -35,8 +35,9 @@ class Login extends Component {
         });
       })
       .catch((err) => {
-        console.log(err);
-        Toast.show(err, {
+        alert(JSON.stringify(err));
+        console.log(JSON.stringify(err) );
+        Toast.show(JSON.stringify(err), {
           position: Toast.position.CENTER,
           containerStyle: {backgroundColor: Colors.red},
           textStyle: {},
