@@ -40,22 +40,42 @@ const History = () => {
         console.log(err);
       });
   }, []);
-  const [Active, setActive] = useState('Complaints');
+  const [Active, setActive] = useState('Fines');
   const [List, setList] = useState([
     {
       VehicleNo: 'TN 39 BT 4863',
       Name: 'Driving without License',
       FineAmount: '1000',
-      PayType: 'Pay Now',
-      FineStatus: 'PENDING',
       ScannedAt: '20-06-2020 1.30PM',
     },
     {
       VehicleNo: 'TN 39 BT 4863',
       Name: 'Driving without License',
       FineAmount: '1000',
-      PayType: 'Pay Now',
-      FineStatus: 'SUCCESS',
+      ScannedAt: '20-06-2020 1.30PM',
+    },
+    {
+      VehicleNo: 'TN 39 BT 4863',
+      Name: 'Driving without License',
+      FineAmount: '1000',
+      ScannedAt: '20-06-2020 1.30PM',
+    },
+    {
+      VehicleNo: 'TN 39 BT 4863',
+      Name: 'Driving without License',
+      FineAmount: '1000',
+      ScannedAt: '20-06-2020 1.30PM',
+    },
+    {
+      VehicleNo: 'TN 39 BT 4863',
+      Name: 'Driving without License',
+      FineAmount: '1000',
+      ScannedAt: '20-06-2020 1.30PM',
+    },
+    {
+      VehicleNo: 'TN 39 BT 4863',
+      Name: 'Driving without License',
+      FineAmount: '1000',
       ScannedAt: '20-06-2020 1.30PM',
     },
   ]);
@@ -73,6 +93,18 @@ const History = () => {
           <TextComponent type={FontType.BOLD} style={{color: Colors.textWhite}}>
             Sub Inspector - Madurai
           </TextComponent>
+          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+            <TextComponent
+              type={FontType.BOLD}
+              style={{color: Colors.textWhite, fontSize: 14}}>
+              Scanned: 100
+            </TextComponent>
+            <TextComponent
+              type={FontType.BOLD}
+              style={{color: Colors.textWhite, fontSize: 14}}>
+              Amount Charged: 100
+            </TextComponent>
+          </View>
         </View>
         <View
           style={{flex: 2, alignItems: 'flex-end', justifyContent: 'center'}}>
@@ -103,7 +135,7 @@ const History = () => {
         <View style={{flex: 1, backgroundColor: Colors.white}}>
           <View
             style={{flexDirection: 'row', marginVertical: 20, marginTop: 5}}>
-            {['Complaints', 'Scanned', 'Fines'].map((data, i) => (
+            {['Fines', 'Scanned'].map((data, i) => (
               <TouchableOpacity
                 activeOpacity={0.8}
                 onPress={() => setActive(data)}
@@ -146,24 +178,27 @@ const History = () => {
                 <View
                   style={{
                     height: '200%',
-                    width: 5,
+                    width: 3,
                     backgroundColor: CheckForStatus(data.FineStatus),
                     position: 'absolute',
                     left: 0,
                     top: 0,
                     bottom: 0,
                   }}></View>
-                <ComplaintCardText label="Vehicle No" value={data.VehicleNo} />
-                <ComplaintCardText label="Name" value={data.Name} />
                 <ComplaintCardText
+                  label="Vehicle No"
+                  value={`${data.VehicleNo} - Rs: ${data.FineAmount}`}
+                />
+                <ComplaintCardText label="Fine Name" value={data.Name} />
+                {/* <ComplaintCardText
                   label="Fine Amount"
                   value={data.FineAmount}
-                />
-                <ComplaintCardText label="Pay Type" value={data.PayType} />
+                /> */}
+                {/* <ComplaintCardText label="Pay Type" value={data.PayType} />
                 <ComplaintCardText
                   label="Fine Status"
                   value={data.FineStatus}
-                />
+                /> */}
                 <ComplaintCardText label="Scanned at" value={data.ScannedAt} />
                 {/* <ReadmoreComponent
           style={{fontSize: 17}}
