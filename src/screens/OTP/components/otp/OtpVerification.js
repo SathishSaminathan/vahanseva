@@ -68,24 +68,29 @@ const OtpVerification = function (props) {
   }, []);
 
   const verifyOtp = () => {
-    Toast.showSuccess('Verified Successfully', {
-      // position: Toast.position.center,
-      containerStyle: {backgroundColor: Colors.primaryThemeColor},
-      textStyle: {},
-      // imgSource: require('xxx'),
-      imgStyle: {},
-      mask: true,
-      maskStyle: {},
-    });
-    // new Services()
-    //   .api(
-    //     GET,
-    //     `vehicle/otp/verify?otp=${`${otpArray[0]}${otpArray[1]}${otpArray[2]}${otpArray[3]}`}`,
-    //   )
-    //   .then((res) => {
-    //     Toast.showSuccess('Verified Successfully');
-    //   })
-    //   .catch((err) => {});
+    new Services()
+      .api(
+        GET,
+        `vehicle/otp/verify?otp=${`${otpArray[0]}${otpArray[1]}${otpArray[2]}${otpArray[3]}`}`,
+      )
+      .then((res) => {
+        Toast.showSuccess('Verified Successfully', {
+          containerStyle: {backgroundColor: Colors.green},
+        });
+        setOtpArray(['', '', '', '']);
+        props.navigation.goBack();
+      })
+      .catch((err) => {
+        Toast.show('Verified Failed', {
+          position: Toast.position.CENTER,
+          containerStyle: {backgroundColor: Colors.red},
+          textStyle: {},
+          // imgSource: require('xxx'),
+          imgStyle: {},
+          // mask: true,
+          maskStyle: {},
+        });
+      });
   };
 
   useEffect(() => {
@@ -196,6 +201,8 @@ const OtpVerification = function (props) {
 
     // resend OTP Api call
     // todo
+
+    sendOtp();
     console.log('todo: Resend OTP');
   };
 
@@ -262,7 +269,7 @@ const OtpVerification = function (props) {
   return (
     <CustomScreenContainer>
       <NavigationHeader
-        title={'Go back'}
+        title={'Verify OTP'}
         leftIconAction={() => props.navigation.goBack()}
         leftIconType={'back'}
         containerStyle={GenericStyles.navigationHeaderBorder}

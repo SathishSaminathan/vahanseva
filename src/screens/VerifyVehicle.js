@@ -71,6 +71,7 @@ export default class VerifyVehicle extends Component {
             }}>
             <TextInputMask
               autoCapitalize="characters"
+              returnKeyType="done"
               autoFocus
               type={'custom'}
               options={{
@@ -91,9 +92,24 @@ export default class VerifyVehicle extends Component {
                   VehicleNo,
                 });
               }}
+              onSubmitEditing={() =>
+                VehicleNo &&
+                this.props.navigation.navigate('DetailsPage', {
+                  VehicleNo: VehicleNo,
+                })
+              }
             />
           </View>
-          <View style={{height: 90}}>
+          <ButtonComponent
+            style={{width: widthPerc(80), borderRadius: 10, marginTop: 10}}
+            onPress={() =>
+              this.props.navigation.navigate('DetailsPage', {
+                VehicleNo: VehicleNo,
+              })
+            }>
+            Submit Number
+          </ButtonComponent>
+          {/* <View style={{height: 90}}>
             {resendButtonDisabledTime === RESEND_OTP_TIME_LIMIT && (
               <ButtonComponent
                 style={{width: widthPerc(80), borderRadius: 10, marginTop: 10}}
@@ -123,15 +139,15 @@ export default class VerifyVehicle extends Component {
             // onCodeFilled={(OTP) => {
             //   this.setState({OTP});
             // }}
-          />
+          /> */}
         </ScrollView>
-        {OTP.length === 4 && (
+        {/* {OTP.length === 4 && (
           <ButtonComponent
             style={{position: 'absolute', bottom: 0, left: 0, right: 0}}
             onPress={() => this.props.navigation.navigate('DetailsPage')}>
             Submit OTP
           </ButtonComponent>
-        )}
+        )} */}
       </View>
     );
   }

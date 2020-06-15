@@ -22,12 +22,6 @@ import Services from '../services';
 const initialLayout = {width: Dimensions.get('window').width};
 
 const DetailsPage = (props) => {
-  let {barcodeValue, positions} = props.route.params;
-  positions = JSON.parse(positions);
-  const {
-    coords: {latitude, longitude},
-  } = positions;
-  console.warn(barcodeValue, positions);
   const [index, setIndex] = React.useState(0);
   const [Loading, setLoading] = useState(true);
   const [Details, setDetails] = useState(null);
@@ -37,27 +31,53 @@ const DetailsPage = (props) => {
   const [VehicleId, setVehicleId] = useState(null);
   const Service = new Services();
 
+  const getDetails = (VehicleNo = null) => {
+    if (!VehicleNo) {
+      let {barcodeValue, positions} = props.route.params;
+      positions = JSON.parse(positions);
+      const {
+        coords: {latitude, longitude},
+      } = positions;
+
+      let url = `qrcode/scan?latitude=${latitude}&longitude=${longitude}&qrCodeNumber=${encodeURIComponent(
+        barcodeValue,
+      )}`;
+
+      Service.api(GET, url)
+        .then((res) => {
+          console.log('vehicle/info/complaints...', res.data);
+          setDetails(res.data);
+          setOwnerInfo(res.data.ownerInfo);
+          setVehicleInfo(res.data.vehicleInfo);
+          setVehicleId(res.data.vehicleInfo.vehicleId);
+          setComplaintInfo(res.data.policeComplaints);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      let url = `vehicle/info?vehicleNumber=${VehicleNo}`;
+      Service.api(GET, url)
+        .then((res) => {
+          console.log('vehicle/info/complaints...', res.data);
+          setDetails(res.data);
+          setOwnerInfo(res.data.ownerInfo);
+          setVehicleInfo(res.data.vehicleInfo);
+          setVehicleId(res.data.vehicleInfo.vehicleId);
+          setComplaintInfo(res.data.policeComplaints);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
+
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
     }, 1500);
-    Service.api(
-      GET,
-      `qrcode/scan?latitude=${latitude}&longitude=${longitude}&qrCodeNumber=${encodeURIComponent(
-        barcodeValue,
-      )}`,
-    )
-      .then((res) => {
-        console.log('vehicle/info/complaints...', barcodeValue, res.data);
-        setDetails(res.data);
-        setOwnerInfo(res.data.ownerInfo);
-        setVehicleInfo(res.data.vehicleInfo);
-        setVehicleId(res.data.vehicleInfo.vehicleId);
-        setComplaintInfo(res.data.policeComplaints);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    let {VehicleNo} = props.route.params;
+    getDetails(VehicleNo);
   }, []);
 
   useFocusEffect(

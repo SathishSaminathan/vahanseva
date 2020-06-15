@@ -21,7 +21,7 @@ const StartScan = (props) => {
       },
       {
         icon: 'search1',
-        name: 'Verify OTP',
+        name: 'Vehicle Number',
         route: 'VerifyVehicle',
       },
     ].map((data, i) => (
@@ -31,7 +31,7 @@ const StartScan = (props) => {
         rippleContainerBorderRadius={BUTTON_HEIGHT}
         style={{
           elevation: 10,
-          width: widthPerc(50),
+          width: widthPerc(60),
           height: BUTTON_HEIGHT,
           backgroundColor: Colors.primaryThemeColor,
           borderRadius: BUTTON_HEIGHT / 2,
@@ -45,7 +45,7 @@ const StartScan = (props) => {
             justifyContent: 'center',
             flexDirection: 'row',
           }}>
-          <View style={{flex: 3, alignItems: 'center'}}>
+          <View style={{flex: 3, alignItems: 'center', position:'absolute', left: "10%"}}>
             <IconComponent
               color={Colors.white}
               type={IconType.AntDesign}
@@ -55,11 +55,11 @@ const StartScan = (props) => {
           </View>
           <View
             style={{
-              flex: 7,
-              alignItems: 'flex-start',
+              flex: 1,
+              alignItems: 'center',
               justifyContent: 'center',
             }}>
-            <TextComponent style={{fontSize: 16, color: Colors.white,paddingLeft:"12%"}}>
+            <TextComponent style={{fontSize: 15, color: Colors.white}}>
               {data.name}
             </TextComponent>
           </View>

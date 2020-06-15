@@ -5,7 +5,13 @@ import {RNCamera} from 'react-native-camera';
 import BarcodeMask from 'react-native-barcode-mask';
 
 import {Colors} from '../constants/ThemeConstants';
-import {heightPerc} from '../helpers/styleHelper';
+import {heightPerc, widthPerc} from '../helpers/styleHelper';
+import TextComponent from '../components/Shared/TextComponent';
+import {IconType} from '../constants/AppConstants';
+import IconComponent from '../components/Shared/IconComponent';
+import Ripple from 'react-native-material-ripple';
+
+const BUTTON_HEIGHT = widthPerc(13);
 
 export default class BarcodePage extends React.Component {
   constructor(props) {
@@ -59,6 +65,55 @@ export default class BarcodePage extends React.Component {
           //   height: heightPerc(20),
           justifyContent: 'space-between',
         }}>
+        <Ripple
+          onPress={() => this.props.navigation.navigate('VerifyVehicle')}
+          rippleContainerBorderRadius={BUTTON_HEIGHT}
+          style={{
+            elevation: 10,
+            alignSelf: 'center',
+            position: 'absolute',
+            top: '10%',
+            zIndex: 100,
+            width: widthPerc(60),
+            height: BUTTON_HEIGHT,
+            backgroundColor: Colors.primaryThemeColor,
+            borderRadius: BUTTON_HEIGHT / 2,
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginVertical: 10,
+          }}>
+          <View
+            style={{
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexDirection: 'row',
+            }}>
+            <View
+              style={{
+                flex: 3,
+                alignItems: 'center',
+                position: 'absolute',
+                left: '10%',
+              }}>
+              <IconComponent
+                color={Colors.white}
+                type={IconType.AntDesign}
+                name={'search1'}
+                size={18}
+              />
+            </View>
+            <View
+              style={{
+                flex: 1,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+              <TextComponent style={{fontSize: 15, color: Colors.white}}>
+                Vehicle Number
+              </TextComponent>
+            </View>
+          </View>
+        </Ripple>
         <BarcodeMask />
       </RNCamera>
     );
