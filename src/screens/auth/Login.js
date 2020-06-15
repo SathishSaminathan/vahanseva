@@ -10,7 +10,7 @@ import {Images} from '../../assets/images/Images';
 import Services from '../../services';
 import {POST, AppVariables} from '../../constants/AppConstants';
 import {setUser} from '../../store/actions';
-import { storeData } from '../../helpers/utils';
+import {storeData} from '../../helpers/utils';
 
 class Login extends Component {
   constructor(props) {

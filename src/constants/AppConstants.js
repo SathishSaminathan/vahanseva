@@ -29,7 +29,6 @@ export const IconType = {
   EvilIcons: EvilIcons,
 };
 
-
 export const AppVariables = {
   USER: 'user',
   IS_FIRST_TIME_USER: 'IS_FIRST_TIME_USER',
@@ -41,4 +40,4 @@ export const POST = 'POST';
 export const GET = 'GET';
 
 // export const API_PORT=
-export const API_IP = 'http://122.165.203.72:9095/vin-app-api/api/v1/';
+export const API_IP = 'https://122.165.203.72:5094/vin-app-api/api/v1/';
