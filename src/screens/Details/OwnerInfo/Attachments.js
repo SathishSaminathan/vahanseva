@@ -17,34 +17,14 @@ import {FontType} from '../../../constants/AppConstants';
 
 const images = [
   {
-    // Simplest usage.
-    // url: "https://avatars2.githubusercontent.com/u/7970947?v=3&s=460",
+    name: 'License',
     url:
       'https://bloximages.chicago2.vip.townnews.com/nwitimes.com/content/tncms/assets/v3/editorial/1/4a/14a842eb-b21a-5ce6-ad64-b98970d0f579/5d0ba9ff06613.image.jpg',
-    // You can pass props to <Image />.
-    props: {
-      // headers: ...
-      //   source: require('./img.png'),
-      style: {
-        height: 100,
-        width: 100,
-      },
-    },
   },
   {
-    // Simplest usage.
-    // url: "https://avatars2.githubusercontent.com/u/7970947?v=3&s=460",
+    name: 'Pollution certificate',
     url:
       'https://i.pinimg.com/originals/bf/db/37/bfdb3796f2848739ade77e73e905068e.jpg',
-    // You can pass props to <Image />.
-    props: {
-      // headers: ...
-      //   source: require('./img.png'),
-      style: {
-        height: 100,
-        width: 100,
-      },
-    },
   },
 ];
 
@@ -87,7 +67,7 @@ const Attachments = ({params}) => {
                   fontSize: 18,
                   paddingVertical: 10,
                 }}>
-                License
+                {data.name}
               </TextComponent>
               <View
                 style={{

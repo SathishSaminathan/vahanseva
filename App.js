@@ -17,7 +17,8 @@ import {HomeTabNavigator} from './src/navigations/TabNavigators';
 import {NavigationContainer} from '@react-navigation/native';
 import PermissionPage from './src/screens/PermissionPage';
 import {setUser, toggleLoading} from './src/store/actions';
-import { getData } from './src/helpers/utils';
+import {getData} from './src/helpers/utils';
+import { AppVariables } from './src/constants/AppConstants';
 
 class App extends Component {
   constructor(props) {
@@ -32,6 +33,7 @@ class App extends Component {
   checkForUser = async () => {
     const {setUser} = this.props;
     const user = await getData(AppVariables.USER);
+    console.log("user user user", user)
     if (user) {
       setUser(user);
     }

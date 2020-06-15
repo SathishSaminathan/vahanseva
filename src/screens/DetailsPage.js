@@ -159,7 +159,7 @@ const DetailsPage = (props) => {
           </View>
         </>
       ) : (
-        <NoData hasRoute {...props} />
+        <NoData hasRoute {...props} text="User is not Registered with VIN" />
       )}
     </View>
   );

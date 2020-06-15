@@ -12,11 +12,11 @@ import {IconType, FontType} from '../constants/AppConstants';
 const BUTTON_HEIGHT = 50;
 
 const NoData = ({navigation, hasRoute, text = 'Sorry no data found'}) => (
-  <View style={{flex: 1, alignItems: 'center'}}>
+  <View style={{flex: 1, alignItems: 'center', padding: 10}}>
     <View style={{height: heightPerc(50), width: widthPerc(100)}}>
       <LottieAnimation file={LottieFile.ThiefHiding} />
     </View>
-    <TextComponent style={{fontSize: 30}} type={FontType.BOLD}>
+    <TextComponent style={{fontSize: 25}} type={FontType.BOLD}>
       {text}
     </TextComponent>
     {hasRoute && (
