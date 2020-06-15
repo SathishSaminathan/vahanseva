@@ -2,6 +2,7 @@ import React, {useState, useEffect, useCallback} from 'react';
 import {Dimensions, View, Alert, BackHandler} from 'react-native';
 import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
 import {useFocusEffect} from '@react-navigation/native';
+import {SCLAlert, SCLAlertButton} from 'react-native-scl-alert';
 
 import {Colors} from '../constants/ThemeConstants';
 import TextComponent from '../components/Shared/TextComponent';
@@ -18,8 +19,43 @@ import IconComponent from '../components/Shared/IconComponent';
 import NoData from './NoData';
 import ButtonComponent from '../components/Shared/ButtonComponent';
 import Services from '../services';
+import {ReadmoreComponent} from '../components/Shared/ReadMore';
+import PhoneCall from '../components/Shared/PhoneCall';
 
 const initialLayout = {width: Dimensions.get('window').width};
+
+const ComplaintCardText = ({
+  label,
+  value,
+  isReadMore = false,
+  rs = null,
+  isPhoneNumber = false,
+}) => (
+  <View style={{flexDirection: 'row', paddingVertical: 5}}>
+    <View style={{flex: 4}}>
+      <TextComponent>{label}</TextComponent>
+    </View>
+    <View style={{flex: 0.5}}>
+      <TextComponent>:</TextComponent>
+    </View>
+    <View
+      style={{flex: 7, flexDirection: 'row', justifyContent: 'space-between'}}>
+      {isReadMore ? (
+        <ReadmoreComponent
+          style={{fontWeight: 'bold'}}
+          lines={1}
+          text={value}
+        />
+      ) : (
+        <TextComponent
+          onPress={() => isPhoneNumber && new PhoneCall().makeCall(value)}
+          type={FontType.BOLD}>
+          {value}
+        </TextComponent>
+      )}
+    </View>
+  </View>
+);
 
 const DetailsPage = (props) => {
   const [index, setIndex] = React.useState(0);
@@ -28,9 +64,11 @@ const DetailsPage = (props) => {
   const [VehicleInfoD, setVehicleInfo] = useState(null);
   const [OwnerInfoD, setOwnerInfo] = useState(null);
   const [ComplaintInfoD, setComplaintInfo] = useState(null);
+  const [ComplaintData, setComplaintData] = useState(null);
   const [VehicleId, setVehicleId] = useState(null);
   const [Attachments, setAttachments] = useState([]);
   const [TrafficFines, setTrafficFines] = useState([]);
+  const [AlertVisible, setAlertVisible] = useState(false);
   const Service = new Services();
 
   const getDetails = (VehicleNo = null) => {
@@ -55,6 +93,11 @@ const DetailsPage = (props) => {
           setComplaintInfo(res.data.policeComplaints);
           setAttachments(res.data.attachments);
           setTrafficFines(res.data.trafficFines);
+          if (res.data.policeComplaints.length > 0) {
+            // alert('ha');
+            setComplaintData(res.data.policeComplaints[0]);
+            setAlertVisible(true);
+          }
         })
         .catch((err) => {
           console.log(err);
@@ -71,6 +114,11 @@ const DetailsPage = (props) => {
           setComplaintInfo(res.data.policeComplaints);
           setAttachments(res.data.attachments);
           setTrafficFines(res.data.trafficFines);
+          if (res.data.policeComplaints.length > 0) {
+            // alert('ha');
+            setComplaintData(res.data.policeComplaints[0]);
+            setAlertVisible(true);
+          }
         })
         .catch((err) => {
           console.log(err);
@@ -124,6 +172,7 @@ const DetailsPage = (props) => {
       <ComplaintInfo
         TrafficFines={TrafficFines}
         ComplaintInfo={ComplaintInfoD}
+        ComplaintData={ComplaintData}
         {...props}
       />
     ),
@@ -154,6 +203,65 @@ const DetailsPage = (props) => {
 
   return (
     <View style={{flex: 1, backgroundColor: Colors.white}}>
+      <SCLAlert
+        show={AlertVisible}
+        onRequestClose={() => setAlertVisible(false)}
+        theme="danger"
+        title="Complaint Registered"
+        subtitle={`This Vehicle has an complaint`}
+        headerIconComponent={
+          <IconComponent
+            type={IconType.Feather}
+            name="alert-triangle"
+            size={32}
+            color="white"
+          />
+        }>
+        {ComplaintData && (
+          <>
+            <ComplaintCardText
+              label="Vehicle No"
+              value={ComplaintData.vehicleNumber}
+            />
+            <ComplaintCardText
+              label="Complaint by"
+              value={ComplaintData.complaintBy}
+            />
+            <ComplaintCardText
+              label="Station name"
+              value={ComplaintData.policeStationName}
+            />
+            <ComplaintCardText
+              label="Description"
+              isReadMore
+              value={ComplaintData.complaintDetail}
+            />
+            <ComplaintCardText label="Status" value={ComplaintData.state} />
+            {ComplaintData.phoneNumber && (
+              <ComplaintCardText
+                label="Phone Number"
+                value={ComplaintData.phoneNumber}
+                isPhoneNumber
+              />
+            )}
+          </>
+        )}
+        <SCLAlertButton onPress={() => setAlertVisible(false)} theme="danger">
+          Understood
+        </SCLAlertButton>
+        {/* <SCLAlertButton
+          onPress={() =>
+            this.props.navigation.dispatch(
+              CommonActions.reset({
+                index: 0,
+                routes: [{name: 'History'}],
+              }),
+            )
+          }
+          theme="default">
+          Pay Later
+        </SCLAlertButton> */}
+      </SCLAlert>
       {Loading ? (
         <LottieAnimation />
       ) : Details ? (

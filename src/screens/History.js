@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {Text, View, ScrollView, TouchableOpacity} from 'react-native';
+import AnimateNumber from '@bankify/react-native-animate-number';
 
 import {GET, AppVariables} from '../constants/AppConstants';
 import TextComponent from '../components/Shared/TextComponent';
@@ -65,6 +66,11 @@ const History = (props) => {
       });
   }, []);
   const [Active, setActive] = useState('Fines');
+  const [Counts, setCounts] = useState({
+    totalFineCharged: 0,
+    totalFineCollected: 0,
+    totalVehicleScanned: 0,
+  });
   const [List, setList] = useState([
     // {
     //   VehicleNo: 'TN 39 BT 4863',
@@ -76,6 +82,17 @@ const History = (props) => {
 
   useEffect(() => {
     getData(Active);
+  }, []);
+
+  useEffect(() => {
+    new Services()
+      .api(GET, 'consumerpolice/complaint/logs')
+      .then((res) => {
+        setCounts(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
 
   return (
@@ -96,12 +113,14 @@ const History = (props) => {
             <TextComponent
               type={FontType.BOLD}
               style={{color: Colors.green, fontSize: 14}}>
-              Scanned: 100
+              Scanned:{' '}
+              <AnimateNumber value={Counts.totalVehicleScanned} countBy={1} />
             </TextComponent>
             <TextComponent
               type={FontType.BOLD}
               style={{color: Colors.green, fontSize: 14}}>
-              Amount Charged: 100
+              Amount Charged:{' '}
+              <AnimateNumber value={Counts.totalFineCollected} countBy={1} />
             </TextComponent>
           </View>
         </View>

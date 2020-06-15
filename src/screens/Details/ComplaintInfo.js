@@ -30,7 +30,12 @@ const ComplaintCardText = ({label, value, isReadMore = false}) => (
   </View>
 );
 
-const ComplaintInfo = ({ComplaintInfoD = [], navigation, TrafficFines}) => {
+const ComplaintInfo = ({
+  ComplaintInfoD = [],
+  navigation,
+  TrafficFines,
+  ComplaintData,
+}) => {
   const [List, setList] = useState(
     // ComplaintInfoD,
     [
@@ -61,7 +66,52 @@ const ComplaintInfo = ({ComplaintInfoD = [], navigation, TrafficFines}) => {
           // alignItems: 'center',
           flexDirection: 'row',
           flexWrap: 'wrap',
+          justifyContent:'center'
         }}>
+        {ComplaintData && (
+          <View
+            style={{
+              width: widthPerc(97),
+              marginVertical: 10,
+              elevation: 10,
+              backgroundColor: Colors.white,
+              padding: 10,
+              borderRadius: 8,
+              overflow: 'hidden',
+              alignSelf: 'center',
+            }}>
+            {true && (
+              <View
+                style={{
+                  height: '200%',
+                  width: 5,
+                  backgroundColor: Colors.red,
+                  position: 'absolute',
+                  left: 0,
+                  top: 0,
+                  bottom: 0,
+                }}></View>
+            )}
+            <ComplaintCardText
+              label="Vehicle No"
+              value={ComplaintData.vehicleNumber}
+            />
+            <ComplaintCardText
+              label="Complaint by"
+              value={ComplaintData.complaintBy}
+            />
+            <ComplaintCardText
+              label="Station name"
+              value={ComplaintData.policeStationName}
+            />
+            <ComplaintCardText
+              label="Description"
+              isReadMore
+              value={ComplaintData.complaintDetail}
+            />
+            <ComplaintCardText label="Status" value={ComplaintData.state} />
+          </View>
+        )}
         {TrafficFines.length !== 0 ? (
           TrafficFines.map((data, i) => (
             <View
