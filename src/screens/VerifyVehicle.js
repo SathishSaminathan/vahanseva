@@ -95,7 +95,7 @@ export default class VerifyVehicle extends Component {
               onSubmitEditing={() =>
                 VehicleNo &&
                 this.props.navigation.navigate('DetailsPage', {
-                  VehicleNo: VehicleNo,
+                  VehicleNo: VehicleNo || "TN 60 CB 0005",
                 })
               }
             />
@@ -104,7 +104,7 @@ export default class VerifyVehicle extends Component {
             style={{width: widthPerc(80), borderRadius: 10, marginTop: 10}}
             onPress={() =>
               this.props.navigation.navigate('DetailsPage', {
-                VehicleNo: VehicleNo,
+                VehicleNo: VehicleNo || "TN 60 CB 0005",
               })
             }>
             Submit Number

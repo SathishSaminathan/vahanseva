@@ -29,6 +29,7 @@ const DetailsPage = (props) => {
   const [OwnerInfoD, setOwnerInfo] = useState(null);
   const [ComplaintInfoD, setComplaintInfo] = useState(null);
   const [VehicleId, setVehicleId] = useState(null);
+  const [Attachments, setAttachments] = useState([]);
   const Service = new Services();
 
   const getDetails = (VehicleNo = null) => {
@@ -51,6 +52,7 @@ const DetailsPage = (props) => {
           setVehicleInfo(res.data.vehicleInfo);
           setVehicleId(res.data.vehicleInfo.vehicleId);
           setComplaintInfo(res.data.policeComplaints);
+          setAttachments(res.data.attachments);
         })
         .catch((err) => {
           console.log(err);
@@ -65,6 +67,7 @@ const DetailsPage = (props) => {
           setVehicleInfo(res.data.vehicleInfo);
           setVehicleId(res.data.vehicleInfo.vehicleId);
           setComplaintInfo(res.data.policeComplaints);
+          setAttachments(res.data.attachments);
         })
         .catch((err) => {
           console.log(err);
@@ -111,7 +114,9 @@ const DetailsPage = (props) => {
 
   const renderScene = SceneMap({
     VehicleInfo: () => <VehicleInfo VehicleInfo={VehicleInfoD} {...props} />,
-    OwnerInfo: () => <OwnerInfo OwnerInfo={OwnerInfoD} {...props} />,
+    OwnerInfo: () => (
+      <OwnerInfo Attachments={Attachments} OwnerInfo={OwnerInfoD} {...props} />
+    ),
     ComplaintInfo: () => (
       <ComplaintInfo ComplaintInfo={ComplaintInfoD} {...props} />
     ),

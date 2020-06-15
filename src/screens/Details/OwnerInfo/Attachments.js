@@ -13,7 +13,8 @@ import {widthPerc, heightPerc} from '../../../helpers/styleHelper';
 import Ripple from 'react-native-material-ripple';
 import TextComponent from '../../../components/Shared/TextComponent';
 import {Colors} from '../../../constants/ThemeConstants';
-import {FontType} from '../../../constants/AppConstants';
+import {FontType, GET, API_IP} from '../../../constants/AppConstants';
+import Services from '../../../services';
 
 const images = [
   {
@@ -28,12 +29,15 @@ const images = [
   },
 ];
 
-const Attachments = ({params}) => {
+const Attachments = ({Attachments = []}) => {
+  Attachments.map(
+    (data) => (data.url = `${API_IP}file/download/${data.fileId}`),
+  );
   const [ModalVisible, setModalVisible] = useState(false);
   const [Index, setIndex] = useState(0);
   return (
     <ScrollView contentContainerStyle={{flexGrow: 1, alignItems: 'center'}}>
-      {images.map((data, i) => (
+      {Attachments.map((data, i) => (
         <View
           key={i}
           style={{
@@ -86,7 +90,7 @@ const Attachments = ({params}) => {
         transparent={true}
         onRequestClose={() => setModalVisible(false)}>
         <ImageViewer
-          imageUrls={images}
+          imageUrls={Attachments}
           index={Index}
           onSwipeDown={() => {
             setModalVisible(false);
