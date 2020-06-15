@@ -11,6 +11,7 @@ import Services from '../../services';
 import {POST, AppVariables} from '../../constants/AppConstants';
 import {setUser} from '../../store/actions';
 import {storeData} from '../../helpers/utils';
+import Toast from 'react-native-tiny-toast';
 
 class Login extends Component {
   constructor(props) {
@@ -35,6 +36,15 @@ class Login extends Component {
       })
       .catch((err) => {
         console.log(err);
+        Toast.show(err, {
+          position: Toast.position.CENTER,
+          containerStyle: {backgroundColor: Colors.red},
+          textStyle: {},
+          // imgSource: require('xxx'),
+          imgStyle: {},
+          // mask: true,
+          maskStyle: {},
+        });
       });
   };
 
