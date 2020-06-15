@@ -34,6 +34,7 @@ const DetailsPage = (props) => {
   const [VehicleInfoD, setVehicleInfo] = useState(null);
   const [OwnerInfoD, setOwnerInfo] = useState(null);
   const [ComplaintInfoD, setComplaintInfo] = useState(null);
+  const [VehicleId, setVehicleId] = useState(null);
   const Service = new Services();
 
   useEffect(() => {
@@ -51,6 +52,7 @@ const DetailsPage = (props) => {
         setDetails(res.data);
         setOwnerInfo(res.data.ownerInfo);
         setVehicleInfo(res.data.vehicleInfo);
+        setVehicleId(res.data.vehicleInfo.vehicleId);
         setComplaintInfo(res.data.policeComplaints);
       })
       .catch((err) => {
@@ -141,7 +143,11 @@ const DetailsPage = (props) => {
             <View style={{flex: 1, alignItems: 'center'}}>
               <ButtonComponent
                 style={{width: '90%', borderRadius: 8}}
-                onPress={() => props.navigation.navigate('OtpVerification')}>
+                onPress={() =>
+                  props.navigation.navigate('OtpVerification', {
+                    VehicleId,
+                  })
+                }>
                 Verify OTP
               </ButtonComponent>
             </View>

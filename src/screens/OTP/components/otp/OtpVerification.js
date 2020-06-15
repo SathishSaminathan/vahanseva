@@ -2,6 +2,7 @@ import React, {useState, useRef, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {StyleSheet, View, ActivityIndicator, StatusBar} from 'react-native';
 import RNOtpVerify from 'react-native-otp-verify';
+import Toast from 'react-native-tiny-toast';
 
 import {GenericStyles} from '../../styles/GenericStyles';
 import {
@@ -18,14 +19,17 @@ import {isAndroid, logErrorWithMessage} from '../../utilities/helperFunctions';
 import TimerText from './TimerText';
 import ButtonComponent from '../../../../components/Shared/ButtonComponent';
 import {Colors} from '../../../../constants/ThemeConstants';
+import Services from '../../../../services';
+import {GET} from '../../../../constants/AppConstants';
 
-const RESEND_OTP_TIME_LIMIT = 30; // 30 secs
+const RESEND_OTP_TIME_LIMIT = 300; // 30 secs
 const AUTO_SUBMIT_OTP_TIME_LIMIT = 4; // 4 secs
 
 let resendOtpTimerInterval;
 let autoSubmitOtpTimerInterval;
 
 const OtpVerification = function (props) {
+  let {VehicleId} = props.route.params;
   const {otpRequestData, attempts} = props;
 
   const [attemptsRemaining, setAttemptsRemaining] = useState(attempts);
@@ -51,6 +55,38 @@ const OtpVerification = function (props) {
 
   // a reference to autoSubmitOtpTimerIntervalCallback to always get updated value of autoSubmitOtpTime
   const autoSubmitOtpTimerIntervalCallbackReference = useRef();
+
+  const sendOtp = () => {
+    new Services()
+      .api(GET, `vehicle/${VehicleId}/otp`)
+      .then((res) => {})
+      .catch((err) => {});
+  };
+
+  useEffect(() => {
+    sendOtp();
+  }, []);
+
+  const verifyOtp = () => {
+    Toast.showSuccess('Verified Successfully', {
+      // position: Toast.position.center,
+      containerStyle: {backgroundColor: Colors.primaryThemeColor},
+      textStyle: {},
+      // imgSource: require('xxx'),
+      imgStyle: {},
+      mask: true,
+      maskStyle: {},
+    });
+    // new Services()
+    //   .api(
+    //     GET,
+    //     `vehicle/otp/verify?otp=${`${otpArray[0]}${otpArray[1]}${otpArray[2]}${otpArray[3]}`}`,
+    //   )
+    //   .then((res) => {
+    //     Toast.showSuccess('Verified Successfully');
+    //   })
+    //   .catch((err) => {});
+  };
 
   useEffect(() => {
     // autoSubmitOtpTime value will be set after otp is detected,
@@ -290,7 +326,12 @@ const OtpVerification = function (props) {
             style={[GenericStyles.centerAlignedText, GenericStyles.mt12]}>
             {attemptsRemaining || 0} Attempts remaining
           </CustomText> */}
-          <ButtonComponent>Submit</ButtonComponent>
+          {otpArray[0] !== '' &&
+            otpArray[1] !== '' &&
+            otpArray[2] !== '' &&
+            otpArray[3] !== '' && (
+              <ButtonComponent onPress={verifyOtp}>Submit</ButtonComponent>
+            )}
         </View>
       </ErrorBoundary>
     </CustomScreenContainer>

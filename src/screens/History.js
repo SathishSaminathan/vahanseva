@@ -11,7 +11,7 @@ import Services from '../services';
 import NoData from './NoData';
 import ImageComponent from '../components/Shared/ImageComponent';
 
-const ComplaintCardText = ({label, value, isReadMore = false}) => (
+const ComplaintCardText = ({label, value, isReadMore = false, rs = null}) => (
   <View style={{flexDirection: 'row', paddingVertical: 5}}>
     <View style={{flex: 3}}>
       <TextComponent>{label}</TextComponent>
@@ -19,8 +19,10 @@ const ComplaintCardText = ({label, value, isReadMore = false}) => (
     <View style={{flex: 1}}>
       <TextComponent>:</TextComponent>
     </View>
-    <View style={{flex: 7}}>
+    <View
+      style={{flex: 7, flexDirection: 'row', justifyContent: 'space-between'}}>
       <TextComponent type={FontType.BOLD}>{value}</TextComponent>
+      {rs && <TextComponent type={FontType.BOLD} style={{color: Colors.green}}>{`Rs: ${rs}`}</TextComponent>}
     </View>
   </View>
 );
@@ -96,12 +98,12 @@ const History = () => {
           <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
             <TextComponent
               type={FontType.BOLD}
-              style={{color: Colors.textWhite, fontSize: 14}}>
+              style={{color: Colors.green, fontSize: 14}}>
               Scanned: 100
             </TextComponent>
             <TextComponent
               type={FontType.BOLD}
-              style={{color: Colors.textWhite, fontSize: 14}}>
+              style={{color: Colors.green, fontSize: 14}}>
               Amount Charged: 100
             </TextComponent>
           </View>
@@ -187,7 +189,8 @@ const History = () => {
                   }}></View>
                 <ComplaintCardText
                   label="Vehicle No"
-                  value={`${data.VehicleNo} - Rs: ${data.FineAmount}`}
+                  value={`${data.VehicleNo}`}
+                  rs={data.FineAmount}
                 />
                 <ComplaintCardText label="Fine Name" value={data.Name} />
                 {/* <ComplaintCardText
