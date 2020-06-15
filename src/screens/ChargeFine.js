@@ -17,7 +17,7 @@ import {Colors} from '../constants/ThemeConstants';
 import Ripple from 'react-native-material-ripple';
 import {widthPerc} from '../helpers/styleHelper';
 import TextComponent from '../components/Shared/TextComponent';
-import {FontType, IconType, GET} from '../constants/AppConstants';
+import {FontType, IconType, GET, POST} from '../constants/AppConstants';
 import ButtonComponent from '../components/Shared/ButtonComponent';
 import IconComponent from '../components/Shared/IconComponent';
 import {TextInput} from 'react-native-gesture-handler';
@@ -226,6 +226,28 @@ export default class ChargeFine extends Component {
     this.setState({Fines: newData});
   };
 
+  submitFine = () => {
+    this.props.navigation.navigate('PaymentSuccess');
+
+    let {VehicleId} = this.props.route.params;
+    new Services()
+      .api(POST, 'vehicle/complaints', {
+        vehicleId: VehicleId,
+        trafficFineIds: this.state.SelectedFines.map((fine) => fine.fineId),
+        fineAmount: this.state.SelectedFines.reduce(
+          (sum, {fineCost}) => sum + fineCost,
+          0,
+        ),
+      })
+      .then((res) => {
+        console.log(res);
+        this.props.navigation.navigate('PaymentSuccess');
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   render() {
     const {Fines, SelectedFines, AlertVisible, Loading} = this.state;
     const TotalAmount = SelectedFines.reduce(
@@ -252,9 +274,7 @@ export default class ChargeFine extends Component {
               color="white"
             />
           }>
-          <SCLAlertButton
-            onPress={() => this.props.navigation.navigate('PaymentSuccess')}
-            theme="success">
+          <SCLAlertButton onPress={this.submitFine} theme="success">
             Pay Now
           </SCLAlertButton>
           <SCLAlertButton

@@ -293,7 +293,9 @@ const DetailsPage = (props) => {
             </View>
             <View style={{flex: 1, alignItems: 'center'}}>
               <ButtonComponent
-                onPress={() => props.navigation.navigate('ChargeFine')}
+                onPress={() =>
+                  props.navigation.navigate('ChargeFine', {VehicleId})
+                }
                 style={{
                   backgroundColor: Colors.red,
                   width: '90%',
