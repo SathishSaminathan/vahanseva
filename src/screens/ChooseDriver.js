@@ -255,7 +255,9 @@ const ChooseDriver = ({navigation}) => {
           </View>
         </ScrollView>
       </ScrollView>
-      <ButtonComponent>Fine the Driver</ButtonComponent>
+      {Name && PhoneNumber && LicenseNumber && (
+        <ButtonComponent>Fine the Driver</ButtonComponent>
+      )}
     </KeyboardAvoidingView>
   );
 };
