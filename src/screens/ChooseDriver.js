@@ -54,6 +54,7 @@ const ChooseDriver = ({navigation}) => {
   const [Name, setName] = useState(null);
   const [PhoneNumber, setPhoneNumber] = useState(null);
   const [LicenseNumber, setLicenseNumber] = useState(null);
+  const [FineList, setFineList] = useState([]);
   return (
     <KeyboardAvoidingView
       behavior="height"
@@ -221,17 +222,18 @@ const ChooseDriver = ({navigation}) => {
                 </View>
               ) : null}
             </View>
-            <View
-              style={{
-                width: widthPerc(90),
-                backgroundColor: Colors.accDividerColor,
-                padding: 10,
-                flex: 1,
-              }}>
-              <TextComponent style={[styles.label]} type={FontType.BOLD}>
-                Fine List
-              </TextComponent>
-              <View style={{}}>
+
+            {FineList.length > 0 ? (
+              <View
+                style={{
+                  width: widthPerc(90),
+                  backgroundColor: Colors.accDividerColor,
+                  padding: 10,
+                  flex: 1,
+                }}>
+                <TextComponent style={[styles.label]} type={FontType.BOLD}>
+                  Fine List
+                </TextComponent>
                 <ComplaintCardText
                   index="1"
                   label="Fine name"
@@ -251,13 +253,13 @@ const ChooseDriver = ({navigation}) => {
                   value={'Traffic light violations'}
                 />
               </View>
-            </View>
+            ) : null}
           </View>
         </ScrollView>
       </ScrollView>
-      {Name && PhoneNumber && LicenseNumber && (
+      {Name && PhoneNumber && LicenseNumber ? (
         <ButtonComponent>Fine the Driver</ButtonComponent>
-      )}
+      ) : null}
     </KeyboardAvoidingView>
   );
 };
