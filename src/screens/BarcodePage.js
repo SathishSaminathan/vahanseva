@@ -46,10 +46,12 @@ export default class BarcodePage extends React.Component {
 
   barcodeRecognized = ({barcodes}) => {
     barcodes.forEach((barcode) => {
-      this.props.navigation.push('DetailsPage', {
-        barcodeValue: barcode.data,
-        positions: this.state.lastPosition,
-      });
+      if (this.state.lastPosition) {
+        this.props.navigation.push('DetailsPage', {
+          barcodeValue: barcode.data,
+          positions: this.state.lastPosition,
+        });
+      }
     });
   };
 
