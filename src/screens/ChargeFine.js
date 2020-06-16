@@ -226,22 +226,35 @@ export default class ChargeFine extends Component {
     this.setState({Fines: newData});
   };
 
-  submitFine = () => {
-    this.props.navigation.navigate('PaymentSuccess');
+  submitFine = (paymentType) => {
+    const {vehicleComplaintId} = this.props.route.params;
 
-    let {VehicleId} = this.props.route.params;
+    let data = {
+      vehicleComplaintId,
+      paymentType,
+      trafficFineIds: this.state.SelectedFines.map((fine) => fine.fineId),
+      // fineAmount: this.state.SelectedFines.reduce(
+      //   (sum, {fineCost}) => sum + fineCost,
+      //   0,
+      // ),
+    };
     new Services()
-      .api(POST, 'vehicle/complaints', {
-        vehicleId: VehicleId,
-        trafficFineIds: this.state.SelectedFines.map((fine) => fine.fineId),
-        fineAmount: this.state.SelectedFines.reduce(
-          (sum, {fineCost}) => sum + fineCost,
-          0,
-        ),
-      })
+      .api(POST, `vehicle/complaint/fines`, data)
       .then((res) => {
-        console.log(res);
-        this.props.navigation.navigate('PaymentSuccess');
+        console.log('PaymentSuccess....', res.data);
+        if (paymentType === 'PAY_NOW') {
+          this.props.navigation.navigate(
+            'PaymentSuccess',
+            JSON.stringify(data),
+          );
+        } else {
+          this.props.navigation.dispatch(
+            CommonActions.reset({
+              index: 0,
+              routes: [{name: 'History'}],
+            }),
+          );
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -254,6 +267,7 @@ export default class ChargeFine extends Component {
       (sum, {fineCost}) => sum + fineCost,
       0,
     );
+    const {vehicleComplaintId} = this.props.route.params;
     return (
       <View style={{flex: 1, backgroundColor: Colors.white}}>
         <SCLAlert
@@ -274,18 +288,13 @@ export default class ChargeFine extends Component {
               color="white"
             />
           }>
-          <SCLAlertButton onPress={this.submitFine} theme="success">
+          <SCLAlertButton
+            onPress={() => this.submitFine('PAY_NOW')}
+            theme="success">
             Pay Now
           </SCLAlertButton>
           <SCLAlertButton
-            onPress={() =>
-              this.props.navigation.dispatch(
-                CommonActions.reset({
-                  index: 0,
-                  routes: [{name: 'History'}],
-                }),
-              )
-            }
+            onPress={() => this.submitFine('PAY_LATER')}
             theme="default">
             Pay Later
           </SCLAlertButton>

@@ -30,17 +30,35 @@ export default class VerifyVehicle extends Component {
   }
 
   componentDidMount() {
-    Geolocation.getCurrentPosition(
-      (position) => {
-        const initialPosition = JSON.stringify(position);
-        this.setState({initialPosition});
-      },
-      // (error) => Alert.alert('Error', JSON.stringify(error)),
-      {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000},
-    );
-    this.watchID = Geolocation.watchPosition((position) => {
-      const lastPosition = JSON.stringify(position);
-      this.setState({lastPosition});
+    this.props.navigation.addListener('focus', () => {
+      Geolocation.getCurrentPosition(
+        (position) => {
+          const initialPosition = JSON.stringify(position);
+          this.setState({initialPosition});
+        },
+        // (error) => Alert.alert('Error', JSON.stringify(error)),
+        {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000},
+      );
+      this.watchID = Geolocation.watchPosition((position) => {
+        const lastPosition = JSON.stringify(position);
+        this.setState({lastPosition}, () => console.log(lastPosition));
+      });
+    });
+    this.props.navigation.addListener('blur', () => {
+      Geolocation.clearWatch(this.watchID);
+
+      // Geolocation.getCurrentPosition(
+      //   (position) => {
+      //     const initialPosition = JSON.stringify(position);
+      //     this.setState({initialPosition});
+      //   },
+      //   // (error) => Alert.alert('Error', JSON.stringify(error)),
+      //   {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000},
+      // );
+      // this.watchID = Geolocation.watchPosition((position) => {
+      //   const lastPosition = JSON.stringify(position);
+      //   this.setState({lastPosition}, () => alert(lastPosition));
+      // });
     });
   }
 
@@ -63,7 +81,7 @@ export default class VerifyVehicle extends Component {
   };
 
   render() {
-    const {VehicleNo, resendButtonDisabledTime, OTP} = this.state;
+    const {VehicleNo, resendButtonDisabledTime, OTP, lastPosition} = this.state;
     return (
       <View style={{flex: 1, backgroundColor: Colors.white}}>
         <NavigationHeader
@@ -117,17 +135,19 @@ export default class VerifyVehicle extends Component {
               }
             />
           </View>
-          <ButtonComponent
-            style={{width: widthPerc(80), borderRadius: 10, marginTop: 10}}
-            onPress={() =>
-              VehicleNo &&
-              this.props.navigation.navigate('DetailsPage', {
-                VehicleNo: VehicleNo,
-                positions: this.state.lastPosition,
-              })
-            }>
-            Submit Number
-          </ButtonComponent>
+          {lastPosition && (
+            <ButtonComponent
+              style={{width: widthPerc(80), borderRadius: 10, marginTop: 10}}
+              onPress={() =>
+                VehicleNo &&
+                this.props.navigation.navigate('DetailsPage', {
+                  VehicleNo: VehicleNo,
+                  positions: this.state.lastPosition,
+                })
+              }>
+              Submit Number
+            </ButtonComponent>
+          )}
           {/* <View style={{height: 90}}>
             {resendButtonDisabledTime === RESEND_OTP_TIME_LIMIT && (
               <ButtonComponent
