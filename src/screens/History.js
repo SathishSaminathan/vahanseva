@@ -147,37 +147,36 @@ const History = (props) => {
       <TextComponent style={{margin: 10, fontSize: 20}} type={FontType.BOLD}>
         History
       </TextComponent>
+      <View style={{flexDirection: 'row', marginVertical: 20, marginTop: 5}}>
+        {['Fines', 'Scanned'].map((data, i) => (
+          <TouchableOpacity
+            activeOpacity={0.8}
+            onPress={() => {
+              setActive(data);
+              getData(data);
+            }}
+            key={i}
+            style={{
+              backgroundColor: Active === data ? Colors.red : Colors.white,
+              padding: 10,
+              paddingHorizontal: 20,
+              borderRadius: 20,
+              marginHorizontal: 5,
+              elevation: 5,
+            }}>
+            <TextComponent
+              style={{
+                color: Active === data ? Colors.white : Colors.red,
+              }}>
+              {data}
+            </TextComponent>
+          </TouchableOpacity>
+        ))}
+      </View>
       {List && List.length === 0 ? (
         <NoData text="Loading..." />
       ) : (
         <View style={{flex: 1, backgroundColor: Colors.white}}>
-          <View
-            style={{flexDirection: 'row', marginVertical: 20, marginTop: 5}}>
-            {['Fines', 'Scanned'].map((data, i) => (
-              <TouchableOpacity
-                activeOpacity={0.8}
-                onPress={() => {
-                  setActive(data);
-                  getData(data);
-                }}
-                key={i}
-                style={{
-                  backgroundColor: Active === data ? Colors.red : Colors.white,
-                  padding: 10,
-                  paddingHorizontal: 20,
-                  borderRadius: 20,
-                  marginHorizontal: 5,
-                  elevation: 5,
-                }}>
-                <TextComponent
-                  style={{
-                    color: Active === data ? Colors.white : Colors.red,
-                  }}>
-                  {data}
-                </TextComponent>
-              </TouchableOpacity>
-            ))}
-          </View>
           {Active === 'Fines' ? (
             <Fines {...props} List={List} />
           ) : (

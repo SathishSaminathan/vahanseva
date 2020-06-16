@@ -48,16 +48,21 @@ function HomeTabNavigator() {
             <View
               style={{
                 position: 'absolute',
-                bottom: focused ? 0 : 20, // space from bottombar
+                bottom: focused ? 0 : 10, // space from bottombar
                 height: 50,
                 width: 50,
                 borderRadius: 58,
                 backgroundColor: Colors.primaryThemeColor,
                 justifyContent: 'center',
                 alignItems: 'center',
-                elevation:10
+                elevation: 10,
               }}>
-              <IconComponent color={Colors.white} size={20} type={IconType.AntDesign} name="scan1" />
+              <IconComponent
+                color={Colors.white}
+                size={20}
+                type={IconType.AntDesign}
+                name="scan1"
+              />
             </View>
           ),
         }}

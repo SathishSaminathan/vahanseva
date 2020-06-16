@@ -20,11 +20,11 @@ const ComplaintCardText = ({label, value, isReadMore = false, rs = null}) => (
     <View
       style={{flex: 7, flexDirection: 'row', justifyContent: 'space-between'}}>
       <TextComponent type={FontType.BOLD}>{value}</TextComponent>
-      {rs && (
+      {rs ? (
         <TextComponent
           type={FontType.BOLD}
           style={{color: Colors.green}}>{`Rs: ${rs}`}</TextComponent>
-      )}
+      ) : null}
     </View>
   </View>
 );

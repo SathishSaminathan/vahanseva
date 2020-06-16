@@ -66,7 +66,7 @@ const ComplaintInfo = ({
           // alignItems: 'center',
           flexDirection: 'row',
           flexWrap: 'wrap',
-          justifyContent:'center'
+          justifyContent: 'center',
         }}>
         {ComplaintData && (
           <View
