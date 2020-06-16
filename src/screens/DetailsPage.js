@@ -72,57 +72,66 @@ const DetailsPage = (props) => {
   const Service = new Services();
 
   const getDetails = (VehicleNo = null) => {
+    // console.log('getDetails....', props.route.params);
     if (!VehicleNo) {
       let {barcodeValue, positions} = props.route.params;
-      positions = JSON.parse(positions);
-      const {
-        coords: {latitude, longitude},
-      } = positions;
+      if (positions) {
+        positions = JSON.parse(positions);
+        const {
+          coords: {latitude, longitude},
+        } = positions;
+        let url = `qrcode/scan?latitude=${latitude}&longitude=${longitude}&qrCodeNumber=${encodeURIComponent(
+          barcodeValue,
+        )}`;
 
-      let url = `qrcode/scan?latitude=${latitude}&longitude=${longitude}&qrCodeNumber=${encodeURIComponent(
-        barcodeValue,
-      )}`;
-
-      Service.api(GET, url)
-        .then((res) => {
-          console.log('vehicle/info/complaints...', res.data);
-          setDetails(res.data);
-          setOwnerInfo(res.data.ownerInfo);
-          setVehicleInfo(res.data.vehicleInfo);
-          setVehicleId(res.data.vehicleInfo.vehicleId);
-          setComplaintInfo(res.data.policeComplaints);
-          setAttachments(res.data.attachments);
-          setTrafficFines(res.data.trafficFines);
-          if (res.data.policeComplaints.length > 0) {
-            // alert('ha');
-            setComplaintData(res.data.policeComplaints[0]);
-            setAlertVisible(true);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+        Service.api(GET, url)
+          .then((res) => {
+            console.log('vehicle/info/complaints...', res.data);
+            setDetails(res.data);
+            setOwnerInfo(res.data.ownerInfo);
+            setVehicleInfo(res.data.vehicleInfo);
+            setVehicleId(res.data.vehicleInfo.vehicleId);
+            setComplaintInfo(res.data.policeComplaints);
+            setAttachments(res.data.attachments);
+            setTrafficFines(res.data.trafficFines);
+            if (res.data.policeComplaints.length > 0) {
+              // alert('ha');
+              setComplaintData(res.data.policeComplaints[0]);
+              setAlertVisible(true);
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
     } else {
-      let url = `vehicle/info?vehicleNumber=${VehicleNo}`;
-      Service.api(GET, url)
-        .then((res) => {
-          console.log('vehicle/info/complaints...', res.data);
-          setDetails(res.data);
-          setOwnerInfo(res.data.ownerInfo);
-          setVehicleInfo(res.data.vehicleInfo);
-          setVehicleId(res.data.vehicleInfo.vehicleId);
-          setComplaintInfo(res.data.policeComplaints);
-          setAttachments(res.data.attachments);
-          setTrafficFines(res.data.trafficFines);
-          if (res.data.policeComplaints.length > 0) {
-            // alert('ha');
-            setComplaintData(res.data.policeComplaints[0]);
-            setAlertVisible(true);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      let {positions} = props.route.params;
+      if (positions) {
+        positions = JSON.parse(positions);
+        const {
+          coords: {latitude, longitude},
+        } = positions;
+        let url = `vehicle/info?latitude=${latitude}&longitude=${longitude}&vehicleNumber=${VehicleNo}`;
+        Service.api(GET, url)
+          .then((res) => {
+            console.log('vehicle/info/complaints...', res.data);
+            setDetails(res.data);
+            setOwnerInfo(res.data.ownerInfo || null);
+            setVehicleInfo(res.data.vehicleInfo || null);
+            setVehicleId(res.data.vehicleInfo.vehicleId || null);
+            setComplaintInfo(res.data.policeComplaints || []);
+            setAttachments(res.data.attachments || []);
+            setTrafficFines(res.data.trafficFines || []);
+            if (res.data.policeComplaints.length > 0) {
+              // alert('ha');
+              setComplaintData(res.data.policeComplaints[0]);
+              setAlertVisible(true);
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
     }
   };
 
@@ -294,7 +303,7 @@ const DetailsPage = (props) => {
             <View style={{flex: 1, alignItems: 'center'}}>
               <ButtonComponent
                 onPress={() =>
-                  props.navigation.navigate('ChargeFine', {VehicleId})
+                  props.navigation.navigate('ChooseDriver', {VehicleId})
                 }
                 style={{
                   backgroundColor: Colors.red,

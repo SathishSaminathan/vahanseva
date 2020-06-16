@@ -19,7 +19,6 @@ import PermissionPage from './src/screens/PermissionPage';
 import {setUser, toggleLoading} from './src/store/actions';
 import {getData} from './src/helpers/utils';
 import { AppVariables } from './src/constants/AppConstants';
-import ChooseDriver from './src/screens/ChooseDriver';
 
 class App extends Component {
   // CN=Sathish Saminathan, OU=RET, O=RET, L=CBE, ST=Tamilnadu, C=INret123
@@ -84,10 +83,9 @@ class App extends Component {
     return (
       <>
         <StatusBar barStyle="dark-content" backgroundColor={Colors.white} />
-        {/* <NavigationContainer>
+        <NavigationContainer>
           <HomeTabNavigator />
-        </NavigationContainer> */}
-        <ChooseDriver />
+        </NavigationContainer>
       </>
     );
   }

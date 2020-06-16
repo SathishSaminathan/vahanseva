@@ -12,6 +12,7 @@ import {widthPerc} from '../helpers/styleHelper';
 import TimerText from './OTP/components/otp/TimerText';
 import ButtonComponent from '../components/Shared/ButtonComponent';
 import {ScrollView} from 'react-native-gesture-handler';
+import Geolocation from '@react-native-community/geolocation';
 
 const RESEND_OTP_TIME_LIMIT = 3; // 30 secs
 
@@ -24,7 +25,23 @@ export default class VerifyVehicle extends Component {
       VehicleNo: '',
       resendButtonDisabledTime: RESEND_OTP_TIME_LIMIT,
       OTP: '',
+      lastPosition: null,
     };
+  }
+
+  componentDidMount() {
+    Geolocation.getCurrentPosition(
+      (position) => {
+        const initialPosition = JSON.stringify(position);
+        this.setState({initialPosition});
+      },
+      // (error) => Alert.alert('Error', JSON.stringify(error)),
+      {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000},
+    );
+    this.watchID = Geolocation.watchPosition((position) => {
+      const lastPosition = JSON.stringify(position);
+      this.setState({lastPosition});
+    });
   }
 
   startResendOtpTimer = () => {
@@ -106,6 +123,7 @@ export default class VerifyVehicle extends Component {
               VehicleNo &&
               this.props.navigation.navigate('DetailsPage', {
                 VehicleNo: VehicleNo,
+                positions: this.state.lastPosition,
               })
             }>
             Submit Number

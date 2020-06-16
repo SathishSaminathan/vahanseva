@@ -8,37 +8,37 @@ import {FontType} from '../../constants/AppConstants';
 
 const VehicleInfo = ({
   VehicleInfo: {
-    name,
-    model,
-    mileage,
-    color,
-    engineCC,
-    engineModel,
-    engineNumber,
-    fuelType,
-    insuranceEndDate,
-    insuranceFileId,
-    insuranceNumber,
-    insuranceStartDate,
-    isQrVerified,
-    isVerified,
-    maxRetailPrice,
-    noOfSeats,
-    pollutionCertificateEndDate,
-    pollutionCertificateFileId,
-    pollutionCertificateStartDate,
-    qrCodeId,
-    rcBookFileId,
-    rcBookNumber,
-    registrationDate,
-    state,
-    stateValue,
-    vehicleId,
-    vehicleIdentificationNumber,
-    vehicleNumber,
-    vehicleType,
-    vehicleTypeValue,
-    year,
+    name = '',
+    model = '',
+    mileage = '',
+    color = '',
+    engineCC = '',
+    engineModel = '',
+    engineNumber = '',
+    fuelType = '',
+    insuranceEndDate = '',
+    insuranceFileId = '',
+    insuranceNumber = '',
+    insuranceStartDate = '',
+    isQrVerified = '',
+    isVerified = '',
+    maxRetailPrice = '',
+    noOfSeats = '',
+    pollutionCertificateEndDate = '',
+    pollutionCertificateFileId = '',
+    pollutionCertificateStartDate = '',
+    qrCodeId = '',
+    rcBookFileId = '',
+    rcBookNumber = '',
+    registrationDate = '',
+    state = '',
+    stateValue = '',
+    vehicleId = '',
+    vehicleIdentificationNumber = '',
+    vehicleNumber = '',
+    vehicleType = '',
+    vehicleTypeValue = '',
+    year = '',
   },
 }) => {
   return (
@@ -80,7 +80,9 @@ const VehicleInfo = ({
               <TextComponent style={{fontSize: 10, color: Colors.textWhite}}>
                 {data.name}
               </TextComponent>
-              <TextComponent type={FontType.BOLD} style={{fontSize: 20, paddingTop:8}}>
+              <TextComponent
+                type={FontType.BOLD}
+                style={{fontSize: 20, paddingTop: 8}}>
                 {data.value}
               </TextComponent>
             </View>

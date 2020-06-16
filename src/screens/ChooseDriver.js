@@ -14,7 +14,9 @@ import ButtonComponent from '../components/Shared/ButtonComponent';
 import {widthPerc} from '../helpers/styleHelper';
 import TextComponent from '../components/Shared/TextComponent';
 import Divider from '../components/Shared/Divider';
-import {FontType} from '../constants/AppConstants';
+import {FontType, GET, POST} from '../constants/AppConstants';
+import Services from '../services';
+import Toast from 'react-native-tiny-toast';
 
 const ComplaintCardText = ({
   label,
@@ -22,9 +24,10 @@ const ComplaintCardText = ({
   isReadMore = false,
   index,
   count,
+  navigation,
 }) => (
   <View style={{flexDirection: 'row', paddingVertical: 5}}>
-    <View style={{flex: 1}}>
+    <View style={{flex: 0.5}}>
       <TextComponent>{index}.</TextComponent>
     </View>
     <View style={{flex: 3}}>
@@ -38,7 +41,9 @@ const ComplaintCardText = ({
         <TextComponent type={FontType.BOLD} style={{marginRight: 5}}>
           {value}({count})
         </TextComponent>
-        <TouchableOpacity onPress={() => alert('hai')} activeOpacity={0.7}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('ComplaintInfoDetails')}
+          activeOpacity={0.7}>
           <TextComponent type={FontType.BOLD} style={{color: Colors.blue}}>
             (View in detail)
           </TextComponent>
@@ -48,13 +53,68 @@ const ComplaintCardText = ({
   </View>
 );
 
-const ChooseDriver = ({navigation}) => {
+const ChooseDriver = ({navigation, route}) => {
+  let {VehicleId} = route.params;
   const phoneNumberRef = useRef(null);
   const licenseNumberRef = useRef(null);
   const [Name, setName] = useState(null);
   const [PhoneNumber, setPhoneNumber] = useState(null);
-  const [LicenseNumber, setLicenseNumber] = useState(null);
+  const [LicenseNumber, setLicenseNumber] = useState('TN 36 20157637373');
   const [FineList, setFineList] = useState([]);
+
+  const getFineList = () => {
+    setFineList([]);
+    new Services()
+      .api(GET, `license/fine/info?licenseNumber=${LicenseNumber}`)
+      .then((res) => {
+        console.log(res);
+        if (res.data.length === 0) {
+          Toast.show('No Complaints', {
+            position: Toast.position.BOTTOM,
+            containerStyle: {backgroundColor: Colors.green},
+            textStyle: {},
+            // imgSource: require('xxx'),
+            imgStyle: {},
+            // mask: true,
+            maskStyle: {},
+          });
+        } else {
+          setFineList(res.data.trafficFines);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const generateComplaintId = (isOwnerAsDriver) => {
+    let data = isOwnerAsDriver
+      ? {
+          vehicleId: VehicleId,
+          isOwnerAsDriver,
+          complaintDetail: 'Traffic Complaint',
+        }
+      : {
+          licenseNumber: LicenseNumber,
+          name: Name,
+          phoneNumber: PhoneNumber,
+          vehicleId: VehicleId,
+          isOwnerAsDriver,
+          complaintDetail: 'Traffic Complaint',
+        };
+    new Services()
+      .api(POST, `vehicle/complaints`, data)
+      .then((res) => {
+        // console.log('vehicle/complaints...', res.data);
+        navigation.navigate('ChargeFine', {
+          vehicleComplaintId: res.data.vehicleComplaintId,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
     <KeyboardAvoidingView
       behavior="height"
@@ -72,7 +132,9 @@ const ChooseDriver = ({navigation}) => {
             alignItems: 'center',
             paddingTop: 20,
           }}>
-          <ButtonComponent style={{width: widthPerc(60), borderRadius: 8}}>
+          <ButtonComponent
+            onPress={() => generateComplaintId(true)}
+            style={{width: widthPerc(60), borderRadius: 8}}>
             Owner as Driver
           </ButtonComponent>
           <Divider />
@@ -137,6 +199,7 @@ const ChooseDriver = ({navigation}) => {
                 </View>
                 <TextInput
                   ref={phoneNumberRef}
+                  maxLength={10}
                   keyboardType="phone-pad"
                   style={[
                     {
@@ -188,6 +251,7 @@ const ChooseDriver = ({navigation}) => {
                   ]}
                   value={LicenseNumber}
                   onChangeText={(e) => setLicenseNumber(e)}
+                  autoCapitalize
                   //   value="sathish"
                 />
               </View>
@@ -211,6 +275,7 @@ const ChooseDriver = ({navigation}) => {
                       },
                     ]}>
                     <ButtonComponent
+                      onPress={getFineList}
                       style={{
                         elevation: 6,
                         backgroundColor: Colors.red,
@@ -234,31 +299,25 @@ const ChooseDriver = ({navigation}) => {
                 <TextComponent style={[styles.label]} type={FontType.BOLD}>
                   Fine List
                 </TextComponent>
-                <ComplaintCardText
-                  index="1"
-                  label="Fine name"
-                  count="10"
-                  value={'Drunk & Drive'}
-                />
-                <ComplaintCardText
-                  index="2"
-                  label="Fine name"
-                  value={'Over speed'}
-                  count="3"
-                />
-                <ComplaintCardText
-                  count="1"
-                  index="3"
-                  label="Fine name"
-                  value={'Traffic light violations'}
-                />
+                {FineList.map((fine, i) => (
+                  <ComplaintCardText
+                    key={i}
+                    navigation={navigation}
+                    index={i + 1}
+                    label="Fine name"
+                    count={fine.fineCount}
+                    value={fine.fineType}
+                  />
+                ))}
               </View>
             ) : null}
           </View>
         </ScrollView>
       </ScrollView>
       {Name && PhoneNumber && LicenseNumber ? (
-        <ButtonComponent>Fine the Driver</ButtonComponent>
+        <ButtonComponent onPress={() => generateComplaintId(false)}>
+          Fine the Driver
+        </ButtonComponent>
       ) : null}
     </KeyboardAvoidingView>
   );
