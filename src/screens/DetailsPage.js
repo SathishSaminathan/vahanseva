@@ -21,6 +21,7 @@ import ButtonComponent from '../components/Shared/ButtonComponent';
 import Services from '../services';
 import {ReadmoreComponent} from '../components/Shared/ReadMore';
 import PhoneCall from '../components/Shared/PhoneCall';
+import NotificationService from '../../NotificationService';
 
 const initialLayout = {width: Dimensions.get('window').width};
 
@@ -59,6 +60,7 @@ const ComplaintCardText = ({
 
 const DetailsPage = (props) => {
   const [index, setIndex] = React.useState(0);
+  const [LogId, setLogId] = useState(null);
   const [Loading, setLoading] = useState(true);
   const [Details, setDetails] = useState(null);
   const [VehicleInfoD, setVehicleInfo] = useState(null);
@@ -70,6 +72,7 @@ const DetailsPage = (props) => {
   const [TrafficFines, setTrafficFines] = useState([]);
   const [AlertVisible, setAlertVisible] = useState(false);
   const Service = new Services();
+  const notification = new NotificationService();
 
   const getDetails = (VehicleNo = null) => {
     // console.log('getDetails....', props.route.params);
@@ -94,6 +97,7 @@ const DetailsPage = (props) => {
             setComplaintInfo(res.data.policeComplaints);
             setAttachments(res.data.attachments);
             setTrafficFines(res.data.trafficFines);
+            setLogId(res.data.logId);
             if (res.data.policeComplaints.length > 0) {
               // alert('ha');
               setComplaintData(res.data.policeComplaints[0]);
@@ -122,6 +126,7 @@ const DetailsPage = (props) => {
             setComplaintInfo(res.data.policeComplaints || []);
             setAttachments(res.data.attachments || []);
             setTrafficFines(res.data.trafficFines || []);
+            setLogId(res.data.logId);
             if (res.data.policeComplaints.length > 0) {
               // alert('ha');
               setComplaintData(res.data.policeComplaints[0]);
@@ -142,6 +147,35 @@ const DetailsPage = (props) => {
     let {VehicleNo} = props.route.params;
     getDetails(VehicleNo);
   }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (Details) {
+        new Services()
+          .api(GET, `check/owner/confirmation/${LogId}`)
+          .then((res) => {
+            if (res.data.alert === 'ALERT') {
+              notification.localNotification({
+                title: 'VIN',
+                message: `The Vehicle Number ${VehicleInfoD.vehicleNumber} is found to be an theft vehicle.`,
+                playSound: true,
+                soundName: 'default',
+                //   actions: '["Yes", "No"]',
+              });
+              clearInterval(interval);
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+      console.log('This will run every second!');
+    }, 2000);
+
+    setTimeout(() => {
+      clearInterval(interval);
+    }, 300000);
+  }, [LogId]);
 
   useFocusEffect(
     useCallback(() => {

@@ -59,7 +59,7 @@ const ChooseDriver = ({navigation, route}) => {
   const licenseNumberRef = useRef(null);
   const [Name, setName] = useState(null);
   const [PhoneNumber, setPhoneNumber] = useState(null);
-  const [LicenseNumber, setLicenseNumber] = useState('TN 36 20157637373');
+  const [LicenseNumber, setLicenseNumber] = useState(null);
   const [FineList, setFineList] = useState([]);
 
   const getFineList = () => {

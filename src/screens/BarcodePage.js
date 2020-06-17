@@ -67,7 +67,7 @@ export default class BarcodePage extends React.Component {
           //   height: heightPerc(20),
           justifyContent: 'space-between',
         }}>
-        <Ripple
+        {/* <Ripple
           onPress={() => this.props.navigation.navigate('VerifyVehicle')}
           rippleContainerBorderRadius={BUTTON_HEIGHT}
           style={{
@@ -115,7 +115,7 @@ export default class BarcodePage extends React.Component {
               </TextComponent>
             </View>
           </View>
-        </Ripple>
+        </Ripple> */}
         <BarcodeMask />
       </RNCamera>
     );

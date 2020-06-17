@@ -114,13 +114,13 @@ const History = (props) => {
               type={FontType.BOLD}
               style={{color: Colors.green, fontSize: 14}}>
               Scanned:{' '}
-              <AnimateNumber value={Counts.totalVehicleScanned} countBy={1} />
+              <AnimateNumber value={Counts.totalVehicleScanned} countBy={100} />
             </TextComponent>
             <TextComponent
               type={FontType.BOLD}
               style={{color: Colors.green, fontSize: 14}}>
               Amount Charged:{' '}
-              <AnimateNumber value={Counts.totalFineCollected} countBy={1} />
+              <AnimateNumber value={Counts.totalFineCollected} countBy={10000} />
             </TextComponent>
           </View>
         </View>
