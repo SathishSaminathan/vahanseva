@@ -1,0 +1,5 @@
+{
+	"editor.formatOnSave": true,
+	"workbench.editor.enablePreview": false,
+	"explorer.autoReveal": false
+}
